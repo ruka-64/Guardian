@@ -1,0 +1,19 @@
+{
+  "name": "mc-guard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "comodern": "^0.1.3",
+    "mineflayer": "^4.33.0",
+    "tsx": "^4.20.6"
+  }
+}
