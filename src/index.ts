@@ -16,7 +16,6 @@ const bot = createBot({
   host: 'marvgame.net',
   port: 25565,
   username: config.email,
-  // password: config.password,
   auth: 'microsoft',
   version: '1.21.1',
 });
@@ -32,8 +31,6 @@ bot.once('spawn', async () => {
   logger.log('Joined');
   await wait(500);
   bot.chat('/msg ruka64 hello');
-  // logger.log('Waiting for load chunks');
-  // await bot.waitForChunksToLoad();
   await bot.waitForTicks(20);
   logger.log('Moving to NeoSigen');
   bot.chat('/server NeoSigen');
@@ -52,6 +49,7 @@ bot.once('spawn', async () => {
   logger.info(`${bot.username ?? 'Bot'} is ready!`);
 });
 
+//TODO: Auto accepting tpa request
 bot.on('message', (msg, pos) => {
   // console.log(msg.json);
   if (msg.json.extra && msg.json.extra.length > 0) {
