@@ -50,6 +50,7 @@ export function mcbot(shouldInit: boolean = false) {
       bot.chat('/home botpos');
     }
     logger.info(`${bot.username ?? 'Bot'} is ready!`);
+    await SendText(`Connected! (logged in as ${bot.username})`, true);
     isReady = true;
   });
 
@@ -93,8 +94,12 @@ export function mcbot(shouldInit: boolean = false) {
     logger.log('Current location is: ', bot.entity.position);
   });
 
-  bot.on('kicked', (reason, loggedIn) => {
+  bot.on('kicked', async (reason, loggedIn) => {
     logger.warn(`I was kicked... reason: ${reason} (LoggedIn: ${loggedIn})`);
+    await SendText(
+      `I was kicked :( (reason: ${reason}) trying to reconnect...`,
+      true
+    );
     logger.log('Reconnecting...');
     return mcbot();
   });
@@ -102,12 +107,17 @@ export function mcbot(shouldInit: boolean = false) {
     if (err.message === 'PartialReadError') return;
     else console.error(err);
   });
-  bot.on('end', (reason) => {
+  bot.on('end', async (reason) => {
+    await SendText(
+      `I was disconnected (reason: ${reason})! trying to reconnect...`,
+      true
+    );
     logger.info(`End event detected (reason: ${reason})`);
     logger.log('Reconnecting...');
     return mcbot();
   });
   bot.on('death', async () => {
     await SendText(`<@${config.master.discorduId}> I was died! respawning...`);
+    bot.chat('/home botpos');
   });
 }
