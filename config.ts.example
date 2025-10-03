@@ -5,10 +5,10 @@ export const config = {
   },
   mc: {
     shouldInit: false,
+    whitelist: ['ruka64'],
   },
   discord: {
-    token:
-      '',
+    token: '',
     guild: '',
     channel: '',
   },
