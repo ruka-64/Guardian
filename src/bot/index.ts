@@ -64,6 +64,7 @@ export function mcbot(shouldInit: boolean = false) {
     });
     //
     if (entity && entity.username) {
+      if (config.mc.whitelist.includes(entity.username)) return;
       const kvData = await kv.get(entity.username);
       // console.log(kvData);
       if (kvData !== 0) {
