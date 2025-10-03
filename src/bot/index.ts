@@ -3,7 +3,7 @@ import { config } from '../../config';
 import { logger } from 'comodern';
 import { kv } from '..';
 import { SendAlert, SendText } from '../discord/utils/notifier';
-import * as autoeat from 'mineflayer-auto-eat';
+import { loader as autoEat } from 'mineflayer-auto-eat';
 
 export let isReady = false;
 
@@ -23,8 +23,6 @@ export function mcbot(shouldInit: boolean = false) {
     version: '1.21.1',
     physicsEnabled: true,
   });
-  bot.loadPlugin(autoeat.loader);
-  bot.autoEat.enableAuto();
 
   logger.info(`My master is ${config.master.mcid}.`);
 
@@ -34,6 +32,9 @@ export function mcbot(shouldInit: boolean = false) {
   });
 
   bot.once('spawn', async () => {
+    bot.loadPlugin(autoEat);
+    bot.autoEat.enableAuto();
+
     logger.log('Joined');
     await wait(500);
     bot.chat('/msg ruka64 hello');
