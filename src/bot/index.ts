@@ -1,0 +1,104 @@
+import { createBot } from 'mineflayer';
+import { config } from '../../config';
+import { logger } from 'comodern';
+import { kv } from '..';
+import { SendAlert } from '../discord/utils/notifier';
+
+export function mcbot(shouldInit: boolean = false) {
+  const wait = (ms: number) => new Promise((_) => setTimeout(_, ms));
+
+  const waitForTeleport = () => {
+    return new Promise<true>((resolve) => {
+      bot.on('forcedMove', () => resolve(true));
+    });
+  };
+  const bot = createBot({
+    host: 'marvgame.net',
+    port: 25565,
+    username: config.email,
+    auth: 'microsoft',
+    version: '1.21.1',
+    physicsEnabled: true,
+  });
+
+  logger.info(`My master is ${config.master.mcid}.`);
+
+  bot.on('chat', (username, msg) => {
+    logger.log(`<${username}> ${msg}`);
+    //
+  });
+
+  bot.once('spawn', async () => {
+    logger.log('Joined');
+    await wait(500);
+    bot.chat('/msg ruka64 hello');
+    await bot.waitForTicks(20);
+    logger.log('Moving to NeoSigen');
+    bot.chat('/server NeoSigen');
+    await waitForTeleport();
+    logger.log('Moved to NeoSigen');
+    if (shouldInit) {
+      await bot.waitForChunksToLoad();
+      bot.chat(`/tpa ${config.master.mcid}`);
+      logger.log('awaiting your tpa request');
+      await waitForTeleport();
+      await bot.waitForChunksToLoad();
+      bot.chat('/sethome botpos');
+    } else {
+      bot.chat('/home botpos');
+    }
+    logger.info(`${bot.username ?? 'Bot'} is ready!`);
+  });
+
+  bot.on('physicsTick', async () => {
+    const entity = bot.nearestEntity((e) => {
+      return (
+        e.type === 'player' &&
+        e.position.distanceTo(bot.entity.position) < 64 &&
+        e.displayName !== 'Armor Stand'
+      );
+    });
+    //
+    if (entity && entity.username) {
+      const kvData = await kv.get(entity.username);
+      if (!kvData) {
+        await kv.set(entity.username, 0, 1000 * 60 * 5);
+        await SendAlert(entity.username, entity.uuid);
+      }
+    }
+  });
+
+  //TODO: Auto accepting tpa request
+  bot.on('message', (msg) => {
+    // console.log(msg.json);
+    if (msg.json.extra && msg.json.extra.length > 0) {
+      if (
+        msg.json.text === config.master.mcid &&
+        msg.json.extra[0].text === ' has requested to teleport to you.'
+      ) {
+        logger.log('Accepting tpa req');
+        bot.chat('/tpaaccept');
+      }
+    }
+  });
+
+  bot.on('forcedMove', () => {
+    logger.info('ForcedMove detected.');
+    logger.log('Current location is: ', bot.entity.position);
+  });
+
+  bot.on('kicked', (reason, loggedIn) => {
+    logger.warn(`I was kicked... reason: ${reason} (LoggedIn: ${loggedIn})`);
+    logger.log('Reconnecting...');
+    return mcbot();
+  });
+  bot.on('error', (err) => {
+    if (err.message === 'PartialReadError') return;
+    else console.error(err);
+  });
+  bot.on('end', (reason) => {
+    logger.info(`End event detected (reason: ${reason})`);
+    logger.log('Reconnecting...');
+    return mcbot();
+  });
+}

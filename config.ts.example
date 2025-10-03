@@ -3,4 +3,13 @@ export const config = {
   master: {
     mcid: 'ruka64',
   },
+  mc: {
+    shouldInit: false,
+  },
+  discord: {
+    token:
+      '',
+    guild: '',
+    channel: '',
+  },
 };
