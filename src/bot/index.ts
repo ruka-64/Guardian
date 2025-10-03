@@ -2,7 +2,7 @@ import { createBot } from 'mineflayer';
 import { config } from '../../config';
 import { logger } from 'comodern';
 import { kv } from '..';
-import { SendAlert } from '../discord/utils/notifier';
+import { SendAlert, SendText } from '../discord/utils/notifier';
 
 export let isReady = false;
 
@@ -106,5 +106,8 @@ export function mcbot(shouldInit: boolean = false) {
     logger.info(`End event detected (reason: ${reason})`);
     logger.log('Reconnecting...');
     return mcbot();
+  });
+  bot.on('death', async () => {
+    await SendText(`<@${config.master.discorduId}> I was died! respawning...`);
   });
 }

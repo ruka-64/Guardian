@@ -2,6 +2,7 @@ export const config = {
   email: 'example@invalid.tld',
   master: {
     mcid: 'ruka64',
+    discorduId: '',
   },
   mc: {
     shouldInit: false,

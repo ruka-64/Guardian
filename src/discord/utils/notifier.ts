@@ -4,11 +4,21 @@ import { config } from '../../../config';
 import { EmbedBuilder } from 'discord.js';
 import { logger } from 'comodern';
 
-export async function SendAlert(mcid: string, uuid?: string) {
-  logger.log(`Detected: ${mcid}`);
+const getChannel = () => {
   const guild = client.guilds.cache.get(config.discord.guild);
   const channel = guild?.channels.cache.get(config.discord.channel);
   assert(channel?.isTextBased());
+  return channel;
+};
+
+export async function SendText(str: string) {
+  const channel = getChannel();
+  channel.send(str);
+}
+
+export async function SendAlert(mcid: string, uuid?: string) {
+  logger.log(`Detected: ${mcid}`);
+  const channel = getChannel();
   const embed = new EmbedBuilder()
     .setTitle('侵入者を "確認しました"')
     .addFields(
