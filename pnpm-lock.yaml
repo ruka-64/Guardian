@@ -20,6 +20,9 @@ importers:
       mineflayer:
         specifier: ^4.33.0
         version: 4.33.0
+      mineflayer-auto-eat:
+        specifier: ^5.0.3
+        version: 5.0.3
       tsx:
         specifier: ^4.20.6
         version: 4.20.6
@@ -225,6 +228,9 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
+  '@nxg-org/mineflayer-util-plugin@1.8.4':
+    resolution: {integrity: sha512-hPaCZxU0Aq+gUSi/l6x7n32hUG6bnDugAMoQXD2dFE/gyNkmRSpmgH5+Y6G41w3H8P3Nl++upGCOlaxvZ7RuoA==}
+
   '@sapphire/async-queue@1.5.5':
     resolution: {integrity: sha512-cvGzxbba6sav2zZkH8GPf2oGk9yYoD5qrNWdu9fRehifgnFZJMV+nuy2nON2roRO4yQQ+v7MK/Pktl/HgfsUXg==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
@@ -422,6 +428,9 @@ packages:
   minecraft-protocol@1.62.0:
     resolution: {integrity: sha512-+Rm7DdwgDiiq5ASXLNixs6TA7tsNn8zJAlhmOh0ccfuMYnlr/5+FliKacf87ZO6MPs5p/mJitIAwONbfqiX2+A==}
     engines: {node: '>=22'}
+
+  mineflayer-auto-eat@5.0.3:
+    resolution: {integrity: sha512-N5tUv2rPPYsTUdIOlMb6k3GXVJjFRQ3uSW3B+jO82STnftU97tpAolSzVUvOUwoNtOBmFKwsrZlb0ov1DKrvQA==}
 
   mineflayer@4.33.0:
     resolution: {integrity: sha512-tysUKVhUpEvHKDn8Awex/wz8WYyRGYrl6EujOVLJsGOU775AwKcapBVAS1BrP0UbM2di6MDwb74muGAFytY+TQ==}
@@ -760,6 +769,8 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
+  '@nxg-org/mineflayer-util-plugin@1.8.4': {}
+
   '@sapphire/async-queue@1.5.5': {}
 
   '@sapphire/shapeshift@4.0.0':
@@ -998,6 +1009,14 @@ snapshots:
       readable-stream: 4.7.0
       uuid-1345: 1.0.2
       yggdrasil: 1.7.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  mineflayer-auto-eat@5.0.3:
+    dependencies:
+      '@nxg-org/mineflayer-util-plugin': 1.8.4
+      mineflayer: 4.33.0
     transitivePeerDependencies:
       - encoding
       - supports-color
