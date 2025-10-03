@@ -71,7 +71,6 @@ export function mcbot(shouldInit: boolean = false) {
     if (entity && entity.username) {
       if (config.mc.whitelist.includes(entity.username)) return;
       const kvData = await kv.get(entity.username);
-      // console.log(kvData);
       if (kvData !== 0) {
         await kv.set(entity.username, 0, 1000 * 60 * 5);
         await SendAlert(entity.username, entity.uuid);
