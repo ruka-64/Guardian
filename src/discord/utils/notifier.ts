@@ -2,8 +2,10 @@ import assert from 'assert';
 import { client } from '..';
 import { config } from '../../../config';
 import { EmbedBuilder } from 'discord.js';
+import { logger } from 'comodern';
 
 export async function SendAlert(mcid: string, uuid?: string) {
+  logger.log(`Detected: ${mcid}`);
   const guild = client.guilds.cache.get(config.discord.guild);
   const channel = guild?.channels.cache.get(config.discord.channel);
   assert(channel?.isTextBased());
@@ -22,7 +24,7 @@ export async function SendAlert(mcid: string, uuid?: string) {
       }
     )
     .setThumbnail(uuid ? `https://api.creepernation.net/avatar/${uuid}` : null)
-    .setColor('#ff0000ff')
+    .setColor('Red')
     .setFooter({
       text: 'Guardian by ruka64',
     })

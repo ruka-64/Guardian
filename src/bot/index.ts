@@ -4,6 +4,8 @@ import { logger } from 'comodern';
 import { kv } from '..';
 import { SendAlert } from '../discord/utils/notifier';
 
+export let isReady = false;
+
 export function mcbot(shouldInit: boolean = false) {
   const wait = (ms: number) => new Promise((_) => setTimeout(_, ms));
 
@@ -48,9 +50,11 @@ export function mcbot(shouldInit: boolean = false) {
       bot.chat('/home botpos');
     }
     logger.info(`${bot.username ?? 'Bot'} is ready!`);
+    isReady = true;
   });
 
   bot.on('physicsTick', async () => {
+    if (!isReady) return;
     const entity = bot.nearestEntity((e) => {
       return (
         e.type === 'player' &&
@@ -61,7 +65,8 @@ export function mcbot(shouldInit: boolean = false) {
     //
     if (entity && entity.username) {
       const kvData = await kv.get(entity.username);
-      if (!kvData) {
+      // console.log(kvData);
+      if (kvData !== 0) {
         await kv.set(entity.username, 0, 1000 * 60 * 5);
         await SendAlert(entity.username, entity.uuid);
       }
