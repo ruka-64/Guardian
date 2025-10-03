@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { client } from '..';
 import { config } from '../../../config';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, MessageFlags } from 'discord.js';
 import { logger } from 'comodern';
 
 const getChannel = () => {
@@ -11,9 +11,12 @@ const getChannel = () => {
   return channel;
 };
 
-export async function SendText(str: string) {
+export async function SendText(str: string, isSilent = false) {
   const channel = getChannel();
-  channel.send(str);
+  channel.send({
+    content: str,
+    flags: isSilent ? MessageFlags.SuppressNotifications : undefined,
+  });
 }
 
 export async function SendAlert(mcid: string, uuid?: string) {
