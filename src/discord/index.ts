@@ -8,7 +8,7 @@ import {
   type ApplicationCommandDataResolvable,
 } from 'discord.js';
 import { config } from '../../config';
-import './types/Client';
+import './types/Client.d.ts';
 import { join } from 'path';
 import { readdirSync } from 'fs';
 

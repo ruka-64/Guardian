@@ -1,6 +1,7 @@
 import { MessageFlags, SlashCommandBuilder } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { client } from '../../index.js';
+import { config } from '../../../../config.js';
 
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
@@ -17,6 +18,13 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction: ChatInputCommandInteraction) {
   const subcommand = interaction.options.getSubcommand();
   if (subcommand === 'send_chat') {
+    if (!config.discord.whitelistedIds.includes(interaction.user.id)) {
+      await interaction.reply({
+        content: 'No Perm',
+        flags: MessageFlags.Ephemeral,
+      });
+      return;
+    }
     const str = interaction.options.getString('text');
     if (!str) {
       await interaction.reply({
