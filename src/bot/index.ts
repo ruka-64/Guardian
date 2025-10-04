@@ -1,4 +1,4 @@
-import { createBot } from 'mineflayer';
+import { createBot, type Bot } from 'mineflayer';
 import { config } from '../../config';
 import { logger } from 'comodern';
 import { kv } from '..';
@@ -6,6 +6,7 @@ import { SendAlert, SendText } from '../discord/utils/notifier';
 import { loader as autoEat } from 'mineflayer-auto-eat';
 
 export let isReady = false;
+export let bot: Bot;
 
 export function mcbot(shouldInit: boolean = false) {
   const wait = (ms: number) => new Promise((_) => setTimeout(_, ms));
@@ -15,7 +16,7 @@ export function mcbot(shouldInit: boolean = false) {
       bot.on('forcedMove', () => resolve(true));
     });
   };
-  const bot = createBot({
+  bot = createBot({
     host: 'marvgame.net',
     port: 25565,
     username: config.email,
