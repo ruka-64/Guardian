@@ -18,7 +18,9 @@ export const data = new SlashCommandBuilder()
     subcommand
       .setName('autoclicker')
       .setDescription('AutoClicker')
-      .addBooleanOption((opt) => opt.setName('enabled').setRequired(true))
+      .addBooleanOption((opt) =>
+        opt.setName('enabled').setDescription('is enabled').setRequired(true)
+      )
   );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
