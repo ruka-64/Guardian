@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "tsx src/index.ts",
+    "reset": "tsx resetcommands.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0-only",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
     "comodern": "^0.1.3",
