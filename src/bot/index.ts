@@ -29,7 +29,6 @@ export function mcbot(shouldInit: boolean = false) {
 
   bot.on('chat', (username, msg) => {
     logger.log(`<${username}> ${msg}`);
-    //
   });
 
   bot.once('spawn', async () => {
