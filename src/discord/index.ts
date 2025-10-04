@@ -94,5 +94,3 @@ client.on('interactionCreate', async (interaction) => {
 client.login(config.discord.token);
 
 process.on('uncaughtException', (e) => logger.error(e));
-process.on('SIGINT', client.destroy);
-process.on('SIGTERM', client.destroy);

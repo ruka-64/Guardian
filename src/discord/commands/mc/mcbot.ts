@@ -50,8 +50,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   }
   if (subcommand === 'autoclicker') {
     const bool = interaction.options.getBoolean('enabled')!;
-    autoClicker(bool);
     await interaction.reply(`Toggled (${bool})`);
+    autoClicker(bool);
     return;
   }
 }

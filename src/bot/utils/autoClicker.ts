@@ -1,8 +1,10 @@
+import { logger } from 'comodern';
 import { bot } from '..';
+import { wait } from '../..';
 
 let autoClickerState = false;
 
-export const autoClicker = (state: boolean) => {
+export const autoClicker = async (state: boolean) => {
   autoClickerState = state;
   const swordId = bot.registry.itemsByName.netherite_sword?.id;
   if (bot.registry.itemsByName.netherite_sword) {
@@ -12,9 +14,13 @@ export const autoClicker = (state: boolean) => {
       bot.equip(sword, 'hand');
     }
   }
-  while (autoClickerState) {
-    setTimeout(async () => {
-      await bot.simpleClick.leftMouse(0);
+  const click = async () => {
+    logger.log('Clicking');
+    await bot.simpleClick.leftMouse(0);
+    logger.log('Clicked');
+    setTimeout(() => {
+      click();
     }, 1000 * 6);
-  }
+  };
+  click();
 };
