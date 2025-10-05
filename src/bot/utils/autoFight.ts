@@ -5,7 +5,7 @@ let attackInterval: NodeJS.Timeout;
 
 export const autoAttackEntity = (activate: boolean) => {
   if (activate) {
-    attackInterval = setInterval(() => {
+    attackInterval = setInterval(async () => {
       const entity = bot.nearestEntity((e) => {
         return (
           e.type === 'hostile' &&
@@ -20,7 +20,8 @@ export const autoAttackEntity = (activate: boolean) => {
         logger.log(
           `XZ Distance: ${entity.position.xzDistanceTo(bot.entity.position)}`
         );
-        const pos = bot.lookAt(entity.position.offset(0, 0, 0));
+        await bot.lookAt(entity.position.offset(0, 0, 0));
+        await bot.waitForTicks(1);
         bot.attack(entity);
       }
     }, 1000);
