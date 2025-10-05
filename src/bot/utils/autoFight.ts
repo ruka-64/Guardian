@@ -9,7 +9,7 @@ export const autoAttackEntity = (activate: boolean) => {
       const entity = bot.nearestEntity((e) => {
         return (
           e.type === 'hostile' &&
-          e.position.xzDistanceTo(bot.entity.position) < 5 &&
+          e.position.xzDistanceTo(bot.entity.position) < 3 &&
           e.position.y - bot.entity.position.y < 2 &&
           e.name !== 'dog' &&
           e.name !== 'cat'
@@ -17,6 +17,9 @@ export const autoAttackEntity = (activate: boolean) => {
       });
       if (entity) {
         logger.log(`Attacking ${entity.name ?? entity.username}`);
+        logger.log(
+          `XZ Distance: ${entity.position.xzDistanceTo(bot.entity.position)}`
+        );
         const pos = bot.lookAt(entity.position.offset(0, 0, 0));
         bot.attack(entity);
       }
