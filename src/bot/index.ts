@@ -103,6 +103,7 @@ export function mcbot(shouldInit: boolean = false) {
         if (match[2] === 'xp') {
           if (isInvFull()) {
             bot.chat(`/msg ${match[1]} My inv is full (try invcleaner)`);
+            return;
           }
           await new Promise<string>((resolve) => {
             bot.chat('/xpm store max');

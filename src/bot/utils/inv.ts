@@ -17,8 +17,8 @@ export const InvCleaner = async () => {
   );
   const bone = bot.inventory.findInventoryItem(bone_id, null, false);
   const arrow = bot.inventory.findInventoryItem(arrow_id, null, false);
-  if (rotten_flesh) bot.toss(rotten_flesh.type, null, rotten_flesh.count);
-  if (bone) bot.toss(bone.type, null, bone.count);
-  if (arrow) bot.toss(arrow.type, null, arrow.count);
-  await bot.look(e.yaw, e.pitch);
+  if (rotten_flesh) await bot.toss(rotten_flesh.type, null, rotten_flesh.count);
+  if (bone) await bot.toss(bone.type, null, bone.count);
+  if (arrow) await bot.toss(arrow.type, null, arrow.count);
+  await bot.look(e.yaw - 90, e.pitch);
 };
