@@ -30,8 +30,6 @@ export const autoAttackEntity = async (activate: boolean) => {
     }, 1000);
   } else {
     clearInterval(attackInterval);
-    bot.setControlState('back', true);
-    await bot.waitForTicks(3);
-    bot.setControlState('back', false);
+    bot.chat('/home botpos');
   }
 };
