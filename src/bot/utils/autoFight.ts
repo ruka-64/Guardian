@@ -14,9 +14,13 @@ export const autoAttackEntity = (activate: boolean) => {
           bot.entity.position.y - e.position.y
         );
         return (
-          e.type == 'mob' &&
+          e.type != 'player' &&
+          e.type != 'orb' &&
+          e.type != 'object' &&
+          e.type != 'projectile' &&
+          e.type != 'hostile' &&
           e.position.xzDistanceTo(bot.entity.position) < 5 &&
-          bot.entity.position.y - e.position.y < 2 &&
+          e.position.y - bot.entity.position.y < 2 &&
           e.name !== 'dog' &&
           e.name !== 'cat'
         );
