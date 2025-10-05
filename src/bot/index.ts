@@ -29,14 +29,14 @@ export function mcbot(shouldInit: boolean = false) {
     logger.log(`<${username}> ${msg}`);
   });
 
-  bot.addChatPattern('tpa_req', /(.+) has requested to teleport to you./, {
-    parse: true,
-    repeat: false,
-  });
-
   bot.once('spawn', async () => {
     bot.loadPlugin(autoEat);
     bot.autoEat.enableAuto();
+
+    bot.addChatPattern('tpa_req', /(.+) has requested to teleport to you./, {
+      parse: true,
+      repeat: false,
+    });
 
     logger.log('Joined');
     await wait(500);
