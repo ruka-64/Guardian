@@ -4,6 +4,7 @@ import { logger } from 'comodern';
 import { kv, wait } from '..';
 import { SendAlert, SendText } from '../discord/utils/notifier';
 import { loader as autoEat } from 'mineflayer-auto-eat';
+import { autoAttackEntity, autoFightState } from './utils/autoFight';
 
 export let isReady = false;
 export let bot: Bot;
@@ -77,12 +78,49 @@ export function mcbot(shouldInit: boolean = false) {
   });
 
   //TODO: Auto accepting tpa request
-  bot.on('messagestr', (msg) => {
-    const tpa_regex = msg.match(/(.+) has requested to teleport to you./);
-    if (tpa_regex) {
-      if (config.mc.whitelist.includes(tpa_regex[0])) {
-        logger.log(`Accepting ${tpa_regex[0]}'s tpa request...`);
-        bot.chat('/tpaccept');
+  bot.on('messagestr', async (msg) => {
+    const tpa_regex = /(.+) has requested to teleport to you./;
+    const tell_regex = /\[(.+) -> me\] (.+)/;
+    if (msg.endsWith('has requested to teleport to you.')) {
+      const match = msg.match(tpa_regex);
+      if (match) {
+        if (config.mc.whitelist.includes(match[0])) {
+          logger.log(`Accepting ${match[0]}'s tpa request...`);
+          bot.chat('/tpaccept');
+        }
+      }
+    }
+    if (msg.startsWith('[')) {
+      const match = msg.match(tell_regex);
+      if (match) {
+        logger.log('Tell', msg);
+        await SendText(`[Tell] ${msg}`);
+        if (match[2] === 'xp') {
+          await new Promise<string>((resolve) => {
+            bot.chat('/xpm store max');
+            bot.on('messagestr', (msg) => resolve(msg));
+          });
+          const isAuto = autoFightState;
+          if (isAuto) autoAttackEntity(false);
+          const expId = bot.registry.itemsByName.experience_bottle!.id;
+          if (bot.registry.itemsByName.experience_bottle) {
+            const exp = bot.inventory.findInventoryItem(expId, null, false);
+            if (exp) {
+              const player = bot.entities[match[1]!];
+              if (!player) {
+                bot.chat(`/msg ${match[1]} I can't find you...`);
+                return;
+              }
+              const currVec3 = bot.entity.position;
+              await bot.lookAt(player.position);
+              await bot.waitForTicks(1);
+              bot.toss(exp.type, null, null);
+              bot.chat(`/msg ${match[1]} Go ahead!`);
+              await bot.lookAt(currVec3);
+            }
+          }
+          if (isAuto) autoAttackEntity(true);
+        }
       }
     }
     logger.log('msg', msg);

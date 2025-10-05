@@ -2,10 +2,7 @@ import { MessageFlags, SlashCommandBuilder } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
 import { bot } from '../../../bot/index.js';
-import {
-  autoAttackEntity,
-  autoFightState,
-} from '../../../bot/utils/autoFight.js';
+import { autoAttackEntity } from '../../../bot/utils/autoFight.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
   .setDescription('Minecraft Bot Commands')
@@ -27,9 +24,6 @@ export const data = new SlashCommandBuilder()
   )
   .addSubcommand((subcommand) =>
     subcommand.setName('money').setDescription('Show money')
-  )
-  .addSubcommand((subcommand) =>
-    subcommand.setName('throwxp').setDescription('Throw xp bottle')
   );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -69,30 +63,5 @@ export async function execute(interaction: ChatInputCommandInteraction) {
       bot.on('messagestr', (msg) => resolve(msg));
     });
     await interaction.reply(`${res}`);
-  }
-  if (subcommand === 'throwxp') {
-    if (!config.discord.whitelistedIds.includes(interaction.user.id)) {
-      await interaction.reply({
-        content: 'No Perm',
-        flags: MessageFlags.Ephemeral,
-      });
-      return;
-    }
-    await new Promise<string>((resolve) => {
-      bot.chat('/xpm store max');
-      bot.on('messagestr', (msg) => resolve(msg));
-    });
-    const isAuto = autoFightState;
-    if (isAuto) autoAttackEntity(false);
-    const expId = bot.registry.itemsByName.experience_bottle!.id;
-    if (bot.registry.itemsByName.experience_bottle) {
-      const exp = bot.inventory.findInventoryItem(expId, null, false);
-      if (exp) {
-        bot.setQuickBarSlot(1);
-        bot.toss(exp.type, null, null);
-      }
-    }
-    if (isAuto) autoAttackEntity(true);
-    await interaction.reply('OK');
   }
 }
