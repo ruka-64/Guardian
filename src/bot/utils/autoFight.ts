@@ -34,7 +34,7 @@ export const autoAttackEntity = async (activate: boolean) => {
         await bot.waitForTicks(1);
         bot.attack(entity);
       }
-    }, 1000);
+    }, 6000);
   } else {
     clearInterval(attackInterval);
     logger.info('Calling /home botpos');
