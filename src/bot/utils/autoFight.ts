@@ -8,10 +8,10 @@ export const autoAttackEntity = (activate: boolean) => {
     ? setInterval(() => {
         const entity = bot.nearestEntity((e) => {
           return (
-            e.type !== 'player' &&
-            e.position.xzDistanceTo(bot.entity.position) < 5 &&
-            e.name !== 'item' &&
-            e.name !== 'experience_orb'
+            e.type == 'mob' &&
+            e.position.distanceTo(bot.entity.position) < 5 &&
+            e.name !== 'dog' &&
+            e.name !== 'cat'
           );
         });
         if (entity) {
