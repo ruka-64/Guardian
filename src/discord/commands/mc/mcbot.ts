@@ -2,7 +2,10 @@ import { MessageFlags, SlashCommandBuilder } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
 import { bot } from '../../../bot/index.js';
-import { autoAttackEntity } from '../../../bot/utils/autoFight.js';
+import {
+  autoAttackEntity,
+  autoFightState,
+} from '../../../bot/utils/autoFight.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
   .setDescription('Minecraft Bot Commands')
@@ -79,6 +82,17 @@ export async function execute(interaction: ChatInputCommandInteraction) {
       bot.chat('/xpm store max');
       bot.on('messagestr', (msg) => resolve(msg));
     });
+    const isAuto = autoFightState;
+    if (isAuto) autoAttackEntity(false);
+    const expId = bot.registry.itemsByName.experience_bottle!.id;
+    if (bot.registry.itemsByName.experience_bottle) {
+      const exp = bot.inventory.findInventoryItem(expId, null, false);
+      if (exp) {
+        bot.setQuickBarSlot(1);
+        bot.toss(exp.type, null, null);
+      }
+    }
+    if (isAuto) autoAttackEntity(true);
     await interaction.reply('OK');
   }
 }

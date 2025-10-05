@@ -2,8 +2,10 @@ import { logger } from 'comodern';
 import { bot } from '..';
 
 let attackInterval: NodeJS.Timeout;
+export let autoFightState = false;
 
 export const autoAttackEntity = async (activate: boolean) => {
+  autoFightState = activate;
   if (activate) {
     const swordId = bot.registry.itemsByName.netherite_sword?.id;
     if (bot.registry.itemsByName.netherite_sword) {
