@@ -94,7 +94,6 @@ export function mcbot(shouldInit: boolean = false) {
       const match = msg.match(tell_regex);
       if (match) {
         logger.log('Tell', msg);
-        await SendText(`[Tell] ${msg}`);
         if (match[2] === 'xp') {
           await new Promise<string>((resolve) => {
             bot.chat('/xpm store max');
@@ -102,6 +101,7 @@ export function mcbot(shouldInit: boolean = false) {
           });
           const isAuto = autoFightState;
           if (isAuto) autoAttackEntity(false);
+          logger.log('Finding xp bottle...');
           const expId = bot.registry.itemsByName.experience_bottle!.id;
           if (bot.registry.itemsByName.experience_bottle) {
             const exp = bot.inventory.findInventoryItem(expId, null, false);
@@ -119,10 +119,13 @@ export function mcbot(shouldInit: boolean = false) {
               bot.chat(`/msg ${match[1]} Go ahead!`);
               await bot.lookAt(currVec3);
               logger.log(`I gave xp to ${match[1]}`);
+            } else {
+              logger.log('Cannot find xp bottle');
+              bot.chat(`/msg ${match[1]} I don't have xp bottle...`);
             }
           }
           if (isAuto) autoAttackEntity(true);
-        }
+        } else await SendText(`[Tell] ${msg}`);
       }
     }
     logger.log('msg', msg);
