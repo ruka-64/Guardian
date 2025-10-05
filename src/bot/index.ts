@@ -29,6 +29,11 @@ export function mcbot(shouldInit: boolean = false) {
     logger.log(`<${username}> ${msg}`);
   });
 
+  bot.addChatPattern('tpa_req', /(.+) has requested to teleport to you./, {
+    parse: true,
+    repeat: false,
+  });
+
   bot.once('spawn', async () => {
     bot.loadPlugin(autoEat);
     bot.autoEat.enableAuto();
@@ -73,6 +78,13 @@ export function mcbot(shouldInit: boolean = false) {
         await kv.set(entity.username, 0, 1000 * 60 * 5);
         await SendAlert(entity.username, entity.uuid);
       }
+    }
+  });
+  //@ts-ignore
+  bot.on('chat:tpa_req', (matches: string[]) => {
+    if (config.mc.whitelist.includes(matches[0]!)) {
+      logger.log(`Accepting ${matches[0]}'s tpa request...`);
+      bot.chat('/tpaccept');
     }
   });
 
