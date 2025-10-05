@@ -17,7 +17,7 @@ export const autoAttackEntity = (activate: boolean) => {
       });
       if (entity) {
         logger.log(`Attacking ${entity.name ?? entity.username}`);
-        const pos = bot.lookAt(entity.position.offset(0, -0.5, 0));
+        const pos = bot.lookAt(entity.position.offset(0, 0, 0));
         bot.attack(entity);
       }
     }, 1000);
