@@ -2,7 +2,7 @@ import { MessageFlags, SlashCommandBuilder } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
 import { bot } from '../../../bot/index.js';
-import { autoClicker } from '../../../bot/utils/autoClicker.js';
+import { autoAttackEntity } from '../../../bot/utils/autoFight.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
   .setDescription('Minecraft Bot Commands')
@@ -16,8 +16,8 @@ export const data = new SlashCommandBuilder()
   )
   .addSubcommand((subcommand) =>
     subcommand
-      .setName('autoclicker')
-      .setDescription('AutoClicker')
+      .setName('auto_tt')
+      .setDescription('Automatic TT farmer')
       .addBooleanOption((opt) =>
         opt.setName('enabled').setDescription('is enabled').setRequired(true)
       )
@@ -48,10 +48,10 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     });
     return;
   }
-  if (subcommand === 'autoclicker') {
+  if (subcommand === 'auto_tt') {
     const bool = interaction.options.getBoolean('enabled')!;
     await interaction.reply(`Toggled (${bool})`);
-    autoClicker(bool);
+    autoAttackEntity(bool);
     return;
   }
 }
