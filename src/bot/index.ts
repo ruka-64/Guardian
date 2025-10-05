@@ -77,17 +77,8 @@ export function mcbot(shouldInit: boolean = false) {
   });
 
   //TODO: Auto accepting tpa request
-  bot.on('message', (msg) => {
-    // console.log(msg.json);
-    if (msg.json.extra && msg.json.extra.length > 0) {
-      if (
-        msg.json.text === config.master.mcid &&
-        msg.json.extra[0].text === ' has requested to teleport to you.'
-      ) {
-        logger.log('Accepting tpa req');
-        bot.chat('/tpaaccept');
-      }
-    }
+  bot.on('messagestr', (msg) => {
+    logger.log('msg', msg);
   });
 
   bot.on('forcedMove', () => {
