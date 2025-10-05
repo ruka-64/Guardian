@@ -3,8 +3,11 @@ import { bot } from '..';
 
 let attackInterval: NodeJS.Timeout;
 
-export const autoAttackEntity = (activate: boolean) => {
+export const autoAttackEntity = async (activate: boolean) => {
   if (activate) {
+    bot.setControlState('forward', true);
+    await bot.waitForTicks(3);
+    bot.setControlState('forward', false);
     attackInterval = setInterval(async () => {
       const entity = bot.nearestEntity((e) => {
         return (
@@ -27,5 +30,8 @@ export const autoAttackEntity = (activate: boolean) => {
     }, 1000);
   } else {
     clearInterval(attackInterval);
+    bot.setControlState('back', true);
+    await bot.waitForTicks(3);
+    bot.setControlState('back', false);
   }
 };
