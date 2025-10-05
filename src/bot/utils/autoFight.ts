@@ -10,7 +10,8 @@ export const autoAttackEntity = (activate: boolean) => {
           return (
             e.type !== 'player' &&
             e.position.xzDistanceTo(bot.entity.position) < 5 &&
-            e.name !== 'item'
+            e.name !== 'item' &&
+            e.name !== 'experience_orb'
           );
         });
         if (entity) {
