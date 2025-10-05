@@ -9,7 +9,8 @@ export const autoAttackEntity = (activate: boolean) => {
         const entity = bot.nearestEntity((e) => {
           return (
             e.type !== 'player' &&
-            e.position.xzDistanceTo(bot.entity.position) < 5
+            e.position.xzDistanceTo(bot.entity.position) < 5 &&
+            e.name !== 'item'
           );
         });
         if (entity) {
