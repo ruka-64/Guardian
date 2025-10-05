@@ -16,7 +16,7 @@ export const autoAttackEntity = async (activate: boolean) => {
       }
     }
     bot.setControlState('forward', true);
-    await bot.waitForTicks(10);
+    await bot.waitForTicks(15);
     bot.setControlState('forward', false);
     attackInterval = setInterval(async () => {
       if (bot.autoEat.isEating) return;

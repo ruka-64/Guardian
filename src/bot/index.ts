@@ -84,8 +84,8 @@ export function mcbot(shouldInit: boolean = false) {
     if (msg.endsWith('has requested to teleport to you.')) {
       const match = msg.match(tpa_regex);
       if (match) {
-        if (config.mc.whitelist.includes(match[0])) {
-          logger.log(`Accepting ${match[0]}'s tpa request...`);
+        if (config.mc.whitelist.includes(match[1]!)) {
+          logger.log(`Accepting ${match[1]}'s tpa request...`);
           bot.chat('/tpaccept');
         }
       }
@@ -114,7 +114,7 @@ export function mcbot(shouldInit: boolean = false) {
               const currVec3 = bot.entity.position;
               await bot.lookAt(player.position);
               await bot.waitForTicks(1);
-              bot.toss(exp.type, null, null);
+              await bot.toss(exp.type, null, null);
               bot.chat(`/msg ${match[1]} Go ahead!`);
               await bot.lookAt(currVec3);
             }
