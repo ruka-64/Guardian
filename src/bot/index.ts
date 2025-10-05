@@ -33,8 +33,6 @@ export function mcbot(shouldInit: boolean = false) {
     bot.loadPlugin(autoEat);
     bot.autoEat.enableAuto();
 
-    bot.addChatPattern('tpa_req', /(.+) has requested to teleport to you./);
-
     logger.log('Joined');
     await wait(500);
     bot.chat('/msg ruka64 hello');
@@ -77,16 +75,16 @@ export function mcbot(shouldInit: boolean = false) {
       }
     }
   });
-  //@ts-ignore
-  bot.on('chat:tpa_req', (matches: string[]) => {
-    if (config.mc.whitelist.includes(matches[0]!)) {
-      logger.log(`Accepting ${matches[0]}'s tpa request...`);
-      bot.chat('/tpaccept');
-    }
-  });
 
   //TODO: Auto accepting tpa request
   bot.on('messagestr', (msg) => {
+    const tpa_regex = msg.match(/(.+) has requested to teleport to you./);
+    if (tpa_regex) {
+      if (config.mc.whitelist.includes(tpa_regex[0])) {
+        logger.log(`Accepting ${tpa_regex[0]}'s tpa request...`);
+        bot.chat('/tpaccept');
+      }
+    }
     logger.log('msg', msg);
   });
 
