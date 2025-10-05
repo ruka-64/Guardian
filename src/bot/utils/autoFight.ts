@@ -7,6 +7,8 @@ export const autoAttackEntity = (activate: boolean) => {
   if (activate) {
     attackInterval = setInterval(() => {
       const entity = bot.nearestEntity((e) => {
+        console.log('xzDistance', e.position.xzDistanceTo);
+        console.log('ydiff', e.position.y - bot.entity.position.y);
         return (
           e.type == 'mob' &&
           e.position.xzDistanceTo(bot.entity.position) < 5 &&
