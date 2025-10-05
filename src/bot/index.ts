@@ -5,6 +5,7 @@ import { kv, wait } from '..';
 import { SendAlert, SendText } from '../discord/utils/notifier';
 import { loader as autoEat } from 'mineflayer-auto-eat';
 import { autoAttackEntity, autoFightState } from './utils/autoFight';
+import { InvCleaner, isInvFull } from './utils/inv';
 
 export let isReady = false;
 export let bot: Bot;
@@ -94,7 +95,15 @@ export function mcbot(shouldInit: boolean = false) {
       const match = msg.match(tell_regex);
       if (match) {
         logger.log('Tell', msg);
+        if (match[2] === 'invcleaner') {
+          await InvCleaner();
+          bot.chat(`/msg ${match[1]} Done.`);
+          return;
+        }
         if (match[2] === 'xp') {
+          if (isInvFull()) {
+            bot.chat(`/msg ${match[1]} My inv is full (try invcleaner)`);
+          }
           await new Promise<string>((resolve) => {
             bot.chat('/xpm store max');
             bot.on('messagestr', (msg) => resolve(msg));
@@ -125,6 +134,7 @@ export function mcbot(shouldInit: boolean = false) {
             }
           }
           if (isAuto) autoAttackEntity(true);
+          return;
         } else await SendText(`[Tell] ${msg}`);
       }
     }
