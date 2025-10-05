@@ -24,6 +24,9 @@ export const data = new SlashCommandBuilder()
   )
   .addSubcommand((subcommand) =>
     subcommand.setName('money').setDescription('Show money')
+  )
+  .addSubcommand((subcommand) =>
+    subcommand.setName('throwxp').setDescription('Throw xp bottle')
   );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -63,5 +66,19 @@ export async function execute(interaction: ChatInputCommandInteraction) {
       bot.on('messagestr', (msg) => resolve(msg));
     });
     await interaction.reply(`${res}`);
+  }
+  if (subcommand === 'throwxp') {
+    if (!config.discord.whitelistedIds.includes(interaction.user.id)) {
+      await interaction.reply({
+        content: 'No Perm',
+        flags: MessageFlags.Ephemeral,
+      });
+      return;
+    }
+    await new Promise<string>((resolve) => {
+      bot.chat('/xpm store max');
+      bot.on('messagestr', (msg) => resolve(msg));
+    });
+    await interaction.reply('OK');
   }
 }
