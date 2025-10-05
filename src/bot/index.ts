@@ -106,6 +106,7 @@ export function mcbot(shouldInit: boolean = false) {
           if (bot.registry.itemsByName.experience_bottle) {
             const exp = bot.inventory.findInventoryItem(expId, null, false);
             if (exp) {
+              logger.log(`Finding ${match[1]}...`);
               const player = bot.entities[match[1]!];
               if (!player) {
                 bot.chat(`/msg ${match[1]} I can't find you...`);
@@ -117,6 +118,7 @@ export function mcbot(shouldInit: boolean = false) {
               await bot.toss(exp.type, null, null);
               bot.chat(`/msg ${match[1]} Go ahead!`);
               await bot.lookAt(currVec3);
+              logger.log(`I gave xp to ${match[1]}`);
             }
           }
           if (isAuto) autoAttackEntity(true);
