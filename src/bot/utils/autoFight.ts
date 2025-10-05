@@ -9,6 +9,7 @@ export const autoAttackEntity = async (activate: boolean) => {
     await bot.waitForTicks(3);
     bot.setControlState('forward', false);
     attackInterval = setInterval(async () => {
+      if (bot.autoEat.isEating) return;
       const entity = bot.nearestEntity((e) => {
         return (
           e.type === 'hostile' &&
