@@ -21,6 +21,9 @@ export const data = new SlashCommandBuilder()
       .addBooleanOption((opt) =>
         opt.setName('enabled').setDescription('is enabled').setRequired(true)
       )
+  )
+  .addSubcommand((subcommand) =>
+    subcommand.setName('money').setDescription('Show money')
   );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -53,5 +56,12 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     await interaction.reply(`Toggled (${bool})`);
     autoAttackEntity(bool);
     return;
+  }
+  if (subcommand === 'money') {
+    const res = await new Promise<string>((resolve) => {
+      bot.chat('/money');
+      bot.on('messagestr', (msg) => resolve(msg));
+    });
+    await interaction.reply(`${res}`);
   }
 }
