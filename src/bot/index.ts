@@ -122,12 +122,15 @@ export function mcbot(shouldInit: boolean = false) {
                 bot.chat(`/msg ${match[1]} I can't find you...`);
                 return;
               }
-              const currVec3 = bot.entity.position;
+              const e = {
+                yaw: bot.entity.yaw,
+                pitch: bot.entity.pitch,
+              };
               await bot.lookAt(player.entity.position);
               await bot.waitForTicks(1);
               await bot.toss(exp.type, null, exp.count);
               bot.chat(`/msg ${match[1]} Go ahead!`);
-              await bot.lookAt(currVec3);
+              await bot.look(e.yaw, e.pitch);
               logger.log(`I gave xp to ${match[1]}`);
             } else {
               logger.log('Cannot find xp bottle');
