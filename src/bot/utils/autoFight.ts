@@ -20,11 +20,7 @@ export const autoAttackEntity = async (activate: boolean) => {
         );
       });
       if (entity) {
-        logger.log(`Attacking ${entity.name ?? entity.username}`);
-        logger.log(
-          `XZ Distance: ${entity.position.xzDistanceTo(bot.entity.position)}`
-        );
-        await bot.lookAt(entity.position.offset(0, 0, 0));
+        await bot.lookAt(entity.position);
         await bot.waitForTicks(1);
         bot.attack(entity);
       }
