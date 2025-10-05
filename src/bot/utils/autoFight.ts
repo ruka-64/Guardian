@@ -30,6 +30,7 @@ export const autoAttackEntity = async (activate: boolean) => {
     }, 1000);
   } else {
     clearInterval(attackInterval);
+    logger.info('Calling /home botpos');
     bot.chat('/home botpos');
   }
 };
