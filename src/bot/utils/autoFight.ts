@@ -5,6 +5,14 @@ let attackInterval: NodeJS.Timeout;
 
 export const autoAttackEntity = async (activate: boolean) => {
   if (activate) {
+    const swordId = bot.registry.itemsByName.netherite_sword?.id;
+    if (bot.registry.itemsByName.netherite_sword) {
+      const sword = bot.inventory.findInventoryItem(swordId!, null, false);
+      if (sword) {
+        bot.setQuickBarSlot(0);
+        bot.equip(sword, 'hand');
+      }
+    }
     bot.setControlState('forward', true);
     await bot.waitForTicks(3);
     bot.setControlState('forward', false);
