@@ -125,7 +125,7 @@ export function mcbot(shouldInit: boolean = false) {
               const currVec3 = bot.entity.position;
               await bot.lookAt(player.entity.position);
               await bot.waitForTicks(1);
-              await bot.toss(exp.type, null, null);
+              await bot.toss(exp.type, null, exp.count);
               bot.chat(`/msg ${match[1]} Go ahead!`);
               await bot.lookAt(currVec3);
               logger.log(`I gave xp to ${match[1]}`);
