@@ -117,13 +117,13 @@ export function mcbot(shouldInit: boolean = false) {
             const exp = bot.inventory.findInventoryItem(expId, null, false);
             if (exp) {
               logger.log(`Finding ${match[1]}...`);
-              const player = bot.entities[match[1]!];
+              const player = bot.players[match[1]!];
               if (!player) {
                 bot.chat(`/msg ${match[1]} I can't find you...`);
                 return;
               }
               const currVec3 = bot.entity.position;
-              await bot.lookAt(player.position);
+              await bot.lookAt(player.entity.position);
               await bot.waitForTicks(1);
               await bot.toss(exp.type, null, null);
               bot.chat(`/msg ${match[1]} Go ahead!`);
