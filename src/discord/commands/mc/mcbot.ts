@@ -86,6 +86,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         .filter((val) => val !== null)
         .join('\n')
     );
+    return await interaction.reply({ embeds: [embed] });
   }
   if (subcommand === 'drop') {
     const id = interaction.options.getString('itemId');
