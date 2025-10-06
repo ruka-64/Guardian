@@ -89,7 +89,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     return await interaction.reply({ embeds: [embed] });
   }
   if (subcommand === 'drop') {
-    const id = interaction.options.getString('itemId');
+    const id = interaction.options.getString('item_id');
     const result = await ThrowItem(id!);
     if (result) await interaction.reply('OK');
     else await interaction.reply('Invalid item id');
