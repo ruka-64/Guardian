@@ -28,10 +28,14 @@ export const ThrowItem = async (id: string) => {
   if (!itemId) {
     return false;
   }
-  const item = bot.inventory.findInventoryItem(itemId, null, false);
   const e = bot.entity;
   await bot.look(e.yaw - 180, e.pitch);
-  if (item) await bot.toss(item.type, null, item.count);
+  for (const slot of bot.inventory.slots) {
+    if (!slot) continue;
+    if (slot.name === id) {
+      await bot.toss(slot.type, null, slot.count);
+    }
+  }
   await bot.look(e.yaw + 180, e.pitch);
   return true;
 };
