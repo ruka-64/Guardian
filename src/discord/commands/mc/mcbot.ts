@@ -66,7 +66,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   if (subcommand === 'autoclicker') {
     const bool = interaction.options.getBoolean('enabled')!;
     await interaction.reply(`Toggled (${bool})`);
-    autoAttackEntity(bool);
+    autoAttackEntity(bool, true);
     return;
   }
   if (subcommand === 'money') {

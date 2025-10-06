@@ -4,7 +4,7 @@ import { bot } from '..';
 let attackInterval: NodeJS.Timeout;
 export let autoFightState = false;
 
-export const autoAttackEntity = async (activate: boolean) => {
+export const autoAttackEntity = async (activate: boolean, move = false) => {
   autoFightState = activate;
   if (activate) {
     const swordId = bot.registry.itemsByName.netherite_sword?.id;
@@ -15,9 +15,11 @@ export const autoAttackEntity = async (activate: boolean) => {
         bot.equip(sword, 'hand');
       }
     }
-    bot.setControlState('forward', true);
-    await bot.waitForTicks(15);
-    bot.setControlState('forward', false);
+    if (move) {
+      bot.setControlState('forward', true);
+      await bot.waitForTicks(15);
+      bot.setControlState('forward', false);
+    }
     attackInterval = setInterval(async () => {
       if (bot.autoEat.isEating) return;
       const entity = bot.nearestEntity((e) => {
