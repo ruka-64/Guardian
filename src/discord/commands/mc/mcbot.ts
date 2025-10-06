@@ -1,4 +1,4 @@
-import { MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
 import { bot } from '../../../bot/index.js';
@@ -24,6 +24,9 @@ export const data = new SlashCommandBuilder()
   )
   .addSubcommand((subcommand) =>
     subcommand.setName('money').setDescription('Show money')
+  )
+  .addSubcommand((subcommand) =>
+    subcommand.setName('showinv').setDescription("display bot's inventory")
   );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -63,5 +66,16 @@ export async function execute(interaction: ChatInputCommandInteraction) {
       bot.on('messagestr', (msg) => resolve(msg));
     });
     await interaction.reply(`${res}`);
+  }
+  if (subcommand === 'showinv') {
+    const embed = new EmbedBuilder().setTitle('My inventory').setDescription(
+      bot.inventory.slots
+        .map((val) => {
+          if (!val) return null;
+          return `${val.displayName} (${val.name}) x${val.count}`;
+        })
+        .filter((val) => val !== null)
+        .join('\n')
+    );
   }
 }
