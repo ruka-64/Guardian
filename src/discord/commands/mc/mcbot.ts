@@ -34,7 +34,7 @@ export const data = new SlashCommandBuilder()
       .setName('drop')
       .setDescription('Drop item')
       .addStringOption((opt) =>
-        opt.setName('itemId').setDescription('Item ID').setRequired(true)
+        opt.setName('item_id').setDescription('Item ID').setRequired(true)
       )
   );
 
