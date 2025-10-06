@@ -3,6 +3,7 @@ import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
 import { bot } from '../../../bot/index.js';
 import { autoAttackEntity } from '../../../bot/utils/autoFight.js';
+import { ThrowItem } from '../../../bot/utils/inv.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
   .setDescription('Minecraft Bot Commands')
@@ -27,6 +28,14 @@ export const data = new SlashCommandBuilder()
   )
   .addSubcommand((subcommand) =>
     subcommand.setName('showinv').setDescription("display bot's inventory")
+  )
+  .addSubcommand((subcommand) =>
+    subcommand
+      .setName('drop')
+      .setDescription('Drop item')
+      .addStringOption((opt) =>
+        opt.setName('itemId').setDescription('Item ID').setRequired(true)
+      )
   );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -77,5 +86,11 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         .filter((val) => val !== null)
         .join('\n')
     );
+  }
+  if (subcommand === 'drop') {
+    const id = interaction.options.getString('itemId');
+    const result = await ThrowItem(id!);
+    if (result) await interaction.reply('OK');
+    else await interaction.reply('Invalid item id');
   }
 }
