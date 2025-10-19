@@ -177,11 +177,13 @@ export function mcbot(shouldInit: boolean = false) {
   bot.on('message', async (json, pos) => {
     if (!json.hasOwnProperty('translate')) return;
     if (json.translate?.startsWith('death.')) {
-      await SendText(
-        `I was died (reason: ${
-          json.translate
-        }), respawning... \nDeathMessage: ${json.toString()}`
-      );
+      if (json.toString().includes(bot.username)) {
+        await SendText(
+          `I was died (reason: ${
+            json.translate
+          }), respawning... \nDeathMessage: ${json.toString()}`
+        );
+      }
     }
   });
 }
