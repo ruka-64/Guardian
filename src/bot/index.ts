@@ -183,6 +183,7 @@ export function mcbot(shouldInit: boolean = false) {
             json.translate
           }), respawning... \nDeathMessage: ${json.toString()}`
         );
+        bot.chat('/home botpos');
       }
     }
   });
