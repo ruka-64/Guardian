@@ -174,8 +174,10 @@ export function mcbot(shouldInit: boolean = false) {
     await wait(5000);
     return mcbot();
   });
-  bot.on('death', async () => {
-    await SendText(`<@${config.master.discorduId}> I was died! respawning...`);
-    bot.chat('/home botpos');
+  bot.on('message', (json, pos) => {
+    if (pos == 'system') return;
+    if (!json.hasOwnProperty('translate')) return;
+    console.log('json-translate', json.translate);
+    console.log('all', json);
   });
 }
