@@ -174,9 +174,14 @@ export function mcbot(shouldInit: boolean = false) {
     await wait(5000);
     return mcbot();
   });
-  bot.on('message', (json, pos) => {
+  bot.on('message', async (json, pos) => {
     if (!json.hasOwnProperty('translate')) return;
-    console.log('json-translate', json.translate);
-    console.log('all', json);
+    if (json.translate?.startsWith('death.')) {
+      await SendText(
+        `I was died (reason: ${
+          json.translate
+        }), respawning... \nDeathMessage: ${json.toString()}`
+      );
+    }
   });
 }
