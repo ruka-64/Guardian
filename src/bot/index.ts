@@ -175,7 +175,6 @@ export function mcbot(shouldInit: boolean = false) {
     return mcbot();
   });
   bot.on('message', (json, pos) => {
-    if (pos == 'system') return;
     if (!json.hasOwnProperty('translate')) return;
     console.log('json-translate', json.translate);
     console.log('all', json);
