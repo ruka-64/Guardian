@@ -184,6 +184,10 @@ export function mcbot(shouldInit: boolean = false) {
           }), respawning... \nDeathMessage: ${json.toString()}`
         );
         bot.chat('/home botpos');
+        await waitForTeleport();
+        if (autoFightState) {
+          autoAttackEntity(true);
+        }
       }
     }
   });
