@@ -160,7 +160,6 @@ export function mcbot(shouldInit: boolean = false) {
         bot.attack(e);
         await wait(1000)
       }
-      console.log('Killed entity')
       // await send
     }
   })
