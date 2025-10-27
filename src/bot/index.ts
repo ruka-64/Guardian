@@ -152,7 +152,7 @@ export function mcbot(shouldInit: boolean = false) {
 
   bot.on('entityHurt', async (e) => {
     if (e) {
-      const send = SendText(`[WARNING] ${e.username ?? e.name} attacked me! trying to kill that entity...`);
+      // const send = SendText(`[WARNING] ${e.username ?? e.name} attacked me! trying to kill that entity...`);
       while (1) {
         if (!e) break;
         if (!e.health || e.health <= 0) break;
@@ -161,7 +161,7 @@ export function mcbot(shouldInit: boolean = false) {
         await wait(1000)
       }
       console.log('Killed entity')
-      await send
+      // await send
     }
   })
 
