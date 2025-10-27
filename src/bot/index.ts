@@ -145,6 +145,26 @@ export function mcbot(shouldInit: boolean = false) {
     logger.log('msg', msg);
   });
 
+  bot._client.on('damage_event', (packet) => {
+    const entity = bot.entities[packet.entityId];
+    bot.emit('entityHurt', entity!, entity!);
+  })
+
+  bot.on('entityHurt', async (e) => {
+    if (e) {
+      const send = SendText(`[WARNING] ${e.username ?? e.name} attacked me! trying to kill that entity...`);
+      while (1) {
+        if (!e) break;
+        if (!e.health || e.health <= 0) break;
+        bot.lookAt(e.position);
+        bot.attack(e);
+        await wait(1000)
+      }
+      console.log('Killed entity')
+      await send
+    }
+  })
+
   bot.on('forcedMove', () => {
     logger.info('ForcedMove detected.');
     logger.log('Current location is: ', bot.entity.position);
