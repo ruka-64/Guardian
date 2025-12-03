@@ -6,7 +6,6 @@ import { SendAlert, SendText } from '../discord/utils/notifier';
 import { loader as autoEat } from 'mineflayer-auto-eat';
 import { autoAttackEntity, autoFightState } from './utils/autoFight';
 import { InvCleaner, isInvFull } from './utils/inv';
-import { pathfinder } from 'mineflayer-pathfinder';
 
 export let isReady = false;
 export let bot: Bot;
@@ -34,7 +33,6 @@ export function mcbot(shouldInit: boolean = false) {
 
   bot.once('spawn', async () => {
     bot.loadPlugin(autoEat);
-    bot.loadPlugin(pathfinder);
     bot.autoEat.enableAuto();
 
     logger.log('Joined');
