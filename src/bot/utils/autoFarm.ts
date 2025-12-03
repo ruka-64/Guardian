@@ -28,7 +28,7 @@ function blockToHarvest() {
   });
 }
 
-export async function harvest(): Promise<true> {
+export async function farm(): Promise<true> {
   try {
     while (1) {
       const toHarvest = blockToHarvest();
