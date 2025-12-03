@@ -22,7 +22,7 @@ export function mcbot(shouldInit: boolean = false) {
     port: 25565,
     username: config.email,
     auth: 'microsoft',
-    version: '1.21.1',
+    version: '1.21.8',
     physicsEnabled: true,
   });
 
@@ -150,7 +150,7 @@ export function mcbot(shouldInit: boolean = false) {
   bot._client.on('damage_event', (packet) => {
     const entity = bot.entities[packet.entityId];
     bot.emit('entityHurt', entity!, entity!);
-  })
+  });
 
   bot.on('entityHurt', async (e) => {
     if (e) {
@@ -160,11 +160,11 @@ export function mcbot(shouldInit: boolean = false) {
         if (!e.health || e.health <= 0) break;
         bot.lookAt(e.position);
         bot.attack(e);
-        await wait(1000)
+        await wait(1000);
       }
       // await send
     }
-  })
+  });
 
   bot.on('forcedMove', () => {
     logger.info('ForcedMove detected.');
