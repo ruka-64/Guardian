@@ -1,5 +1,15 @@
 # Guardian - Useful base defender for MARV
 
+## 🚧 NO LONGER MAINTED 🚧
+
+In MARV SEASON 2, Anticheat was updated and this bot flagged it.
+
+Idk how to fix it and I don't have motivating in this project so I archive this repository.
+
+Feel free to fork this repository. Please note that license is `AGPL-3.0`.
+
+---
+
 ## Why I made this
 
 Recently, I playing Minecraft at [MARV](https://marvgame.com/).
@@ -11,14 +21,16 @@ I enjoying this server but me and friends are troubled by encroacher so I made t
 Guardian checking near players every tick and send alert if detected player.
 
 This bot runs discord bot and provides the following commands:
-* `/ping` - Returns pong.
-* `/mcbot bot_chat <str>` - Send text to chat.
-* `/mcbot autoclicker <bool>` - Auto Clicker for TT.
-* `/mcbot money` - Show current balance.
+
+- `/ping` - Returns pong.
+- `/mcbot bot_chat <str>` - Send text to chat.
+- `/mcbot autoclicker <bool>` - Auto Clicker for TT.
+- `/mcbot money` - Show current balance.
 
 Also, you can use the following commands by `/msg <bot_mcid> <commandName>`:
-* `invcleaner` - Clean the bot's inventory.
-* `xp` - Throw exp bottle.
+
+- `invcleaner` - Clean the bot's inventory.
+- `xp` - Throw exp bottle.
 
 ## Running yourself
 
