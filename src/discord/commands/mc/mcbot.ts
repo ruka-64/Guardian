@@ -1,9 +1,15 @@
-import { EmbedBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import {
+  EmbedBuilder,
+  MessageFlags,
+  MessageFlagsBitField,
+  SlashCommandBuilder,
+} from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
 import { bot } from '../../../bot/index.js';
 import { autoAttackEntity } from '../../../bot/utils/autoFight.js';
 import { ThrowItem } from '../../../bot/utils/inv.js';
+import { farm } from '../../../bot/utils/autoFarm.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
   .setDescription('Minecraft Bot Commands')
@@ -22,6 +28,9 @@ export const data = new SlashCommandBuilder()
       .addBooleanOption((opt) =>
         opt.setName('enabled').setDescription('is enabled').setRequired(true)
       )
+  )
+  .addSubcommand((subcommand) =>
+    subcommand.setName('farm').setDescription('Auto farm')
   )
   .addSubcommand((subcommand) =>
     subcommand.setName('money').setDescription('Show money')
@@ -61,6 +70,14 @@ export async function execute(interaction: ChatInputCommandInteraction) {
       content: `Successfully sent message: ${str}`,
       allowedMentions: { parse: [] },
     });
+    return;
+  }
+  if (subcommand === 'farm') {
+    const msg = await interaction.deferReply({
+      flags: MessageFlagsBitField.Flags.Ephemeral,
+    });
+    await farm();
+    await msg.edit('Done.');
     return;
   }
   if (subcommand === 'autoclicker') {
