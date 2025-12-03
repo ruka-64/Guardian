@@ -26,6 +26,9 @@ importers:
       tsx:
         specifier: ^4.20.6
         version: 4.20.6
+      vec3:
+        specifier: ^0.1.10
+        version: 0.1.10
     devDependencies:
       '@types/node':
         specifier: ^24.6.2
