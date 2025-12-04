@@ -1,5 +1,13 @@
 # Guardian - Useful base defender for MARV
 
+## 🚧 NO LONGER MAINTED 🚧
+
+In MARV SEASON 2, Anticheat was updated and this bot flagged it.
+
+I can't fix it and I don't have motivating in this project so I archive this repository.
+
+Feel free to fork this repository. Please note that license is `AGPL-3.0`.
+
 ## Why I made this
 
 Recently, I playing Minecraft at [MARV](https://marvgame.com/).
