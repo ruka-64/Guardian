@@ -39,10 +39,10 @@ export function mcbot(shouldInit: boolean = false) {
     await wait(500);
     bot.chat('/msg ruka64 hello');
     await bot.waitForTicks(20);
-    logger.log('Moving to NeoSigen');
-    bot.chat('/server NeoSigen');
+    logger.log('Moving to NeoEarth');
+    bot.chat('/server NeoEarth');
     await waitForTeleport();
-    logger.log('Moved to NeoSigen');
+    logger.log('Moved to NeoEarth');
     if (shouldInit) {
       await bot.waitForChunksToLoad();
       bot.chat(`/tpa ${config.master.mcid}`);
@@ -165,8 +165,8 @@ export function mcbot(shouldInit: boolean = false) {
   });
 
   bot.on('forcedMove', () => {
-    logger.info('ForcedMove detected.');
-    logger.log('Current location is: ', bot.entity.position);
+    // logger.warn('ForcedMove detected.');
+    // logger.log('Current location is: ', bot.entity.position);
   });
 
   bot.on('kicked', async (reason, loggedIn) => {
