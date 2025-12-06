@@ -106,7 +106,7 @@ export function mcbot(shouldInit: boolean = false) {
             return;
           }
           await new Promise<string>((resolve) => {
-            bot.chat('/xpm store max');
+            bot.chat('/b store max');
             bot.on('messagestr', (msg) => resolve(msg));
           });
           const isAuto = autoFightState;
