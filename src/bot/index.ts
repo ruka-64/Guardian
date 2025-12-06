@@ -39,10 +39,10 @@ export function mcbot(shouldInit: boolean = false) {
     await wait(500);
     bot.chat('/msg ruka64 hello');
     await bot.waitForTicks(20);
-    logger.log('Moving to NeoEarth');
-    bot.chat('/server NeoEarth');
+    logger.log('Moving to NeoSigen');
+    bot.chat('/server NeoSigen');
     await waitForTeleport();
-    logger.log('Moved to NeoEarth');
+    logger.log('Moved to NeoSigen');
     if (shouldInit) {
       await bot.waitForChunksToLoad();
       bot.chat(`/tpa ${config.master.mcid}`);
