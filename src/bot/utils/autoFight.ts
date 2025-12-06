@@ -5,24 +5,29 @@ import { config } from '../../../config';
 let attackInterval: NodeJS.Timeout;
 export let autoFightState = false;
 
+const equipSword = () => {
+  const swordId = bot.registry.itemsByName[config.mc.sword_name]?.id;
+  if (bot.registry.itemsByName[config.mc.sword_name]?.id) {
+    const sword = bot.inventory.findInventoryItem(swordId!, null, false);
+    if (sword) {
+      bot.setQuickBarSlot(0);
+      bot.equip(sword, 'hand');
+    }
+  }
+};
+
 export const autoAttackEntity = async (activate: boolean, move = false) => {
   autoFightState = activate;
   if (activate) {
-    const swordId = bot.registry.itemsByName[config.mc.sword_name]?.id;
-    if (bot.registry.itemsByName[config.mc.sword_name]?.id) {
-      const sword = bot.inventory.findInventoryItem(swordId!, null, false);
-      if (sword) {
-        bot.setQuickBarSlot(0);
-        bot.equip(sword, 'hand');
-      }
-    }
     if (move) {
       bot.setControlState('forward', true);
       await bot.waitForTicks(15);
       bot.setControlState('forward', false);
     }
+    equipSword();
     attackInterval = setInterval(async () => {
       if (bot.autoEat.isEating) return;
+      equipSword();
       const entity = bot.nearestEntity((e) => {
         return (
           e.type === 'hostile' &&
@@ -37,7 +42,7 @@ export const autoAttackEntity = async (activate: boolean, move = false) => {
         await bot.waitForTicks(1);
         bot.attack(entity);
       }
-    }, 8000);
+    }, 2000);
   } else {
     clearInterval(attackInterval);
     logger.info('Calling /home botpos');
