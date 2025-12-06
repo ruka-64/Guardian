@@ -9,7 +9,7 @@ export const autoAttackEntity = async (activate: boolean, move = false) => {
   autoFightState = activate;
   if (activate) {
     const swordId = bot.registry.itemsByName[config.mc.sword_name]?.id;
-    if (bot.registry.itemsByName.netherite_sword) {
+    if (bot.registry.itemsByName[config.mc.sword_name]?.id) {
       const sword = bot.inventory.findInventoryItem(swordId!, null, false);
       if (sword) {
         bot.setQuickBarSlot(0);
