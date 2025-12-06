@@ -1,33 +1,58 @@
-import type { Vec3 } from 'vec3';
+import { Vec3, type Vec3 as Vec3T } from 'vec3';
 import { bot } from '..';
 import { logger } from 'comodern';
 
-export const moveToGoal = (pos: Vec3) => {
+export const moveToGoal = (pos: Vec3T) => {
   return new Promise<true>(async (_) => {
+    let flagged = false;
+    let c = 0;
+
+    let fc = 0;
+    bot.on('forcedMove', () => {
+      fc++;
+      logger.warn('forcedMove detected!! Count:', fc);
+      if (fc > 5) {
+        fc = 0;
+        flagged = true;
+      }
+      const before = fc;
+      setTimeout(() => {
+        if (before === fc) {
+          logger.log('Clear count');
+          fc = 0;
+        }
+      }, 5000);
+    });
+
     logger.log('Looking');
     await bot.lookAt(pos);
     await bot.waitForTicks(5);
     while (1) {
-      await bot.waitForChunksToLoad();
-
-      if (!bot.getControlState('forward')) {
-        logger.log('Started walking');
-        bot.setControlState('sprint', true);
-        bot.setControlState('forward', true);
-      }
-      logger.log('Wait 5ticks');
-      await bot.waitForTicks(5);
-      logger.log('Calc...');
-      const curr = bot.player.entity.position;
-      logger.log('Calc result:', curr.distanceTo(pos));
-      logger.log('amIwalking', bot.getControlState('forward'));
-      if (curr.distanceTo(pos) < 1) {
-        bot.setControlState('sprint', false);
+      if (flagged) {
+        logger.warn('Flagged! trying to bypass...');
         bot.setControlState('forward', false);
-        logger.log('Done moving');
+        const botpos = bot.entity.position;
+        await bot.lookAt(new Vec3(botpos.x, -100, botpos.z));
+        await bot.waitForTicks(20);
+        await bot.lookAt(pos);
+        flagged = false;
+        logger.info('Continue');
+      }
+      if (c % 10 === 0) {
+        bot.setControlState('forward', false);
+        await bot.waitForTicks(10);
+        await bot.lookAt(pos);
+      }
+      if (!bot.getControlState('forward')) bot.setControlState('forward', true);
+      const distance = bot.player.entity.position.distanceTo(pos);
+      logger.log('Walking. distance:', distance);
+      if (distance < 1) {
+        bot.setControlState('forward', false);
+        logger.log('Done');
         break;
       }
+      await bot.waitForTicks(5);
+      c++;
     }
-    _(true);
   });
 };
