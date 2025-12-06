@@ -48,11 +48,12 @@ export const moveToGoal = (pos: Vec3T) => {
       logger.log('Walking. distance:', distance);
       if (distance < 1) {
         bot.setControlState('forward', false);
-        logger.log('Done');
+        logger.log('Done walking');
         break;
       }
       await bot.waitForTicks(5);
       c++;
     }
+    _(true);
   });
 };
