@@ -1,12 +1,12 @@
 # Guardian - Useful base defender for MARV
 
-## 🚧 NO LONGER MAINTED 🚧
+## ⚠️ VIAPROXY NEEDED TO USE THIS PROJECT ⚠️
 
-In MARV SEASON 2, Anticheat was updated and this bot flagged it.
+In MARV SEASON 2, Server required `=<1.21.8`.
 
-I can't fix it and I don't have motivating in this project so I archive this repository.
+Mineflayer does not fully support 1.21.8 so viaproxy is required to convert procotol from 1.21.1 to 1.21.8.
 
-Feel free to fork this repository. Please note that license is `AGPL-3.0`.
+[How to setup](/Setup-Viaproxy.md)
 
 ## Why I made this
 
