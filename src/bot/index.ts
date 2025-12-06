@@ -17,11 +17,11 @@ export function mcbot(shouldInit: boolean = false) {
     });
   };
   bot = createBot({
-    host: 'marvgame.net',
-    port: 25565,
+    host: '127.0.0.1',
+    port: 25568,
     username: config.email,
-    auth: 'microsoft',
-    version: '1.21.8',
+    auth: 'offline',
+    version: '1.21.1',
     physicsEnabled: true,
   });
 
