@@ -42,7 +42,7 @@ export const autoAttackEntity = async (activate: boolean, move = false) => {
         await bot.waitForTicks(1);
         bot.attack(entity);
       }
-    }, 2000);
+    }, config.mc.autoFightDelay ?? 4000);
   } else {
     clearInterval(attackInterval);
     logger.info('Calling /home botpos');
