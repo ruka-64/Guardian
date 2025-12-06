@@ -10,15 +10,15 @@ export const moveToGoal = (pos: Vec3T) => {
     let fc = 0;
     bot.on('forcedMove', () => {
       fc++;
-      logger.warn('forcedMove detected!! Count:', fc);
-      if (fc > 5) {
+      // logger.warn('forcedMove detected!! Count:', fc);
+      if (fc > 10) {
         fc = 0;
         flagged = true;
       }
       const before = fc;
       setTimeout(() => {
         if (before === fc) {
-          logger.log('Clear count');
+          // logger.log('Clear count');
           fc = 0;
         }
       }, 5000);
