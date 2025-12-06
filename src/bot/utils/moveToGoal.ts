@@ -38,7 +38,7 @@ export const moveToGoal = (pos: Vec3T) => {
         flagged = false;
         logger.info('Continue');
       }
-      if (c % 10 === 0) {
+      if (c % 5 === 0) {
         bot.setControlState('forward', false);
         await bot.waitForTicks(10);
         await bot.lookAt(pos);
