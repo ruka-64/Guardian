@@ -80,7 +80,7 @@ export function mcbot(shouldInit: boolean = false) {
         await bot.waitForChunksToLoad();
         await bot.waitForTicks(10);
         bot.chat('/msg ruka64 reconnecting');
-        bot.chat('/neosigen');
+        bot.chat('/server NeoSigen');
         return;
       }
       const kvData = await kv.get(entity.username);
@@ -109,7 +109,7 @@ export function mcbot(shouldInit: boolean = false) {
       await bot.waitForChunksToLoad();
       await bot.waitForTicks(10);
       bot.chat('/msg ruka64 reconnecting');
-      bot.chat('/neosigen');
+      bot.chat('/server NeoSigen');
     }
     if (msg.includes('You cannot pick up items for')) {
       if (await kv.get('rejoining')) {
