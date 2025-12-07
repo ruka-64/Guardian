@@ -82,7 +82,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   if (subcommand === 'autoclicker') {
     const bool = interaction.options.getBoolean('enabled')!;
     await interaction.reply(`Toggled (${bool})`);
-    autoFighter.startAttacking();
+    bool ? autoFighter.startAttacking() : autoFighter.stopAttacking();
     return;
   }
   if (subcommand === 'money') {
