@@ -77,6 +77,8 @@ export function mcbot(shouldInit: boolean = false) {
         await kv.set('rejoining', true, 1000 * 30);
         logger.log('rejoining kv value:', await kv.get('rejoining'));
         await SendText('I transfered to lobby! Rejoining to NeoSigen...', true);
+        await bot.waitForChunksToLoad();
+        await bot.waitForTicks(10);
         bot.chat('/msg ruka64 reconnecting');
         bot.chat('/server NeoSigen');
       }
@@ -90,12 +92,17 @@ export function mcbot(shouldInit: boolean = false) {
 
   //TODO: Auto accepting tpa request
   bot.on('messagestr', async (msg) => {
+    if (msg == 'Unknown or incomplete command, see below for error') {
+      await SendText('Failed to send command (unknown command)', true);
+    }
     if (msg.includes('[Spartan Notification]')) {
       if (!isReady) return;
       if (await kv.get('rejoining')) return;
       await kv.set('rejoining', true, 1000 * 30);
       logger.log('rejoining kv value:', await kv.get('rejoining'));
       await SendText('I transfered to lobby! Rejoining to NeoSigen...', true);
+      await bot.waitForChunksToLoad();
+      await bot.waitForTicks(10);
       bot.chat('/msg ruka64 reconnecting');
       bot.chat('/server NeoSigen');
     }
