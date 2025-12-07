@@ -90,6 +90,14 @@ export function mcbot(shouldInit: boolean = false) {
 
   //TODO: Auto accepting tpa request
   bot.on('messagestr', async (msg) => {
+    if (msg.includes('protected by Spartan AntiCheat')) {
+      if (await kv.get('rejoining')) return;
+      await kv.set('rejoining', true, 1000 * 30);
+      logger.log('rejoining kv value:', await kv.get('rejoining'));
+      await SendText('I transfered to lobby! Rejoining to NeoSigen...', true);
+      bot.chat('/msg ruka64 reconnecting');
+      bot.chat('/server NeoSigen');
+    }
     if (msg.includes('You cannot pick up items for')) {
       if (await kv.get('rejoining')) {
         await SendText('Rejoined!', true);
