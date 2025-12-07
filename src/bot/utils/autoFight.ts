@@ -54,8 +54,7 @@ export class autoFightModule {
 
   private async reJoin() {
     SendText('Auto rejoining (spider.count > 20)', true);
-    await kv.set('rejoining', true, 1000 * 30);
-    bot.chat('/hub');
+    bot.quit();
   }
 
   private shouldRejoin() {
