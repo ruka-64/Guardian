@@ -90,7 +90,7 @@ export function mcbot(shouldInit: boolean = false) {
 
   //TODO: Auto accepting tpa request
   bot.on('messagestr', async (msg) => {
-    if (msg.includes('protected by Spartan AntiCheat')) {
+    if (msg.includes('protected by the Spartan AntiCheat')) {
       if (await kv.get('rejoining')) return;
       await kv.set('rejoining', true, 1000 * 30);
       logger.log('rejoining kv value:', await kv.get('rejoining'));
