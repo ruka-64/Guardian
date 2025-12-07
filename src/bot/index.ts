@@ -94,7 +94,11 @@ export function mcbot(shouldInit: boolean = false) {
   //TODO: Auto accepting tpa request
   bot.on('messagestr', async (msg) => {
     if (msg.includes('Unknown or incomplete command, see below for error')) {
-      await SendText('Failed to send command (unknown command)', true);
+      await SendText(
+        'Failed to send command (unknown command), reconnecting',
+        true
+      );
+      bot.end('suicide');
     }
     if (msg.includes('[Spartan Notification]')) {
       if (!isReady) return;
