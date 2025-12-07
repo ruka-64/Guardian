@@ -74,7 +74,7 @@ export function mcbot(shouldInit: boolean = false) {
       if (await kv.get('rejoining')) return;
       if (config.mc.whitelist.includes(entity.username)) return;
       if (entity.username.includes('[ZNPC]')) {
-        await kv.set('reJoining', true, 1000 * 30);
+        await kv.set('rejoining', true, 1000 * 30);
         logger.log('rejoining kv value:', await kv.get('rejoining'));
         await SendText('I transfered to lobby! Rejoining to NeoSigen...', true);
         bot.chat('/msg ruka64 reconnecting');
