@@ -6,8 +6,7 @@ import {
 } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
-import { bot } from '../../../bot/index.js';
-import { autoAttackEntity } from '../../../bot/utils/autoFight.js';
+import { autoFighter, bot } from '../../../bot/index.js';
 import { ThrowItem } from '../../../bot/utils/inv.js';
 import { farm } from '../../../bot/utils/autoFarm.js';
 export const data = new SlashCommandBuilder()
@@ -83,7 +82,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   if (subcommand === 'autoclicker') {
     const bool = interaction.options.getBoolean('enabled')!;
     await interaction.reply(`Toggled (${bool})`);
-    autoAttackEntity(bool, true);
+    autoFighter.startAttacking();
     return;
   }
   if (subcommand === 'money') {

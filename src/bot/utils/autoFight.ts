@@ -1,41 +1,33 @@
-import { logger } from 'comodern';
 import { bot } from '..';
 import { config } from '../../../config';
+import type { Bot } from 'mineflayer';
 
-let attackInterval: NodeJS.Timeout;
-export let autoFightState = false;
-
-const equipSword = () => {
-  const swordId = bot.registry.itemsByName[config.mc.sword_name]?.id;
-  if (bot.registry.itemsByName[config.mc.sword_name]?.id) {
-    const sword = bot.inventory.findInventoryItem(swordId!, null, false);
-    if (sword) {
-      bot.setQuickBarSlot(0);
-      bot.equip(sword, 'hand');
-    }
+export class autoFightModule {
+  public running: boolean;
+  private attackInterval: NodeJS.Timeout | null;
+  private bot: Bot;
+  constructor(bot: Bot) {
+    this.bot = bot;
+    this.attackInterval = null;
+    this.running = false;
   }
-};
+  async startAttacking(walk: boolean = true) {
+    this.running = true;
 
-export const autoAttackEntity = async (activate: boolean, move = false) => {
-  autoFightState = activate;
-  if (activate) {
-    if (move) {
+    if (walk) {
       bot.setControlState('forward', true);
       await bot.waitForTicks(15);
       bot.setControlState('forward', false);
     }
-    equipSword();
-    await bot.waitForTicks(10);
-    attackInterval = setInterval(async () => {
+
+    this.attackInterval = setInterval(async () => {
       if (bot.autoEat.isEating) return;
-      equipSword();
+      this.equipWeapon();
       const entity = bot.nearestEntity((e) => {
         return (
           e.type === 'hostile' &&
           e.position.xzDistanceTo(bot.entity.position) < 3 &&
-          e.position.y - bot.entity.position.y < 2 &&
-          e.name !== 'dog' &&
-          e.name !== 'cat'
+          e.position.y - bot.entity.position.y < 2
         );
       });
       if (entity) {
@@ -44,9 +36,29 @@ export const autoAttackEntity = async (activate: boolean, move = false) => {
         bot.attack(entity);
       }
     }, config.mc.autoFightDelay ?? 4000);
-  } else {
-    clearInterval(attackInterval);
-    logger.info('Calling /home botpos');
+  }
+  stopAttacking(goback: boolean = true) {
+    this.running = false;
+    if (this.attackInterval) {
+      clearInterval(this.attackInterval);
+      this.attackInterval = null;
+      if (goback) this.goBotPos();
+    }
+  }
+
+  private goBotPos() {
     bot.chat('/home botpos');
   }
-};
+
+  private equipWeapon() {
+    if (bot.heldItem && bot.heldItem.name == config.mc.sword_name) return;
+    const swordId = bot.registry.itemsByName[config.mc.sword_name]?.id;
+    if (bot.registry.itemsByName[config.mc.sword_name]?.id) {
+      const sword = bot.inventory.findInventoryItem(swordId!, null, false);
+      if (sword) {
+        bot.setQuickBarSlot(0);
+        bot.equip(sword, 'hand');
+      }
+    }
+  }
+}

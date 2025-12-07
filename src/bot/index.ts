@@ -4,11 +4,13 @@ import { logger } from 'comodern';
 import { kv, wait } from '..';
 import { SendAlert, SendText } from '../discord/utils/notifier';
 import { loader as autoEat } from 'mineflayer-auto-eat';
-import { autoAttackEntity, autoFightState } from './utils/autoFight';
+import { autoFightModule } from './utils/autoFight';
 import { InvCleaner, isInvFull } from './utils/inv';
 
 export let isReady = false;
 export let bot: Bot;
+
+export const autoFighter = new autoFightModule(bot!);
 
 export function mcbot(shouldInit: boolean = false) {
   const waitForTeleport = () => {
@@ -109,8 +111,8 @@ export function mcbot(shouldInit: boolean = false) {
             bot.chat('/b store max');
             bot.on('messagestr', (msg) => resolve(msg));
           });
-          const isAuto = autoFightState;
-          if (isAuto) autoAttackEntity(false);
+          const afRunning = autoFighter.running;
+          if (afRunning) autoFighter.stopAttacking(false);
           logger.log('Finding xp bottle...');
           const expId = bot.registry.itemsByName.experience_bottle!.id;
           if (bot.registry.itemsByName.experience_bottle) {
@@ -137,7 +139,7 @@ export function mcbot(shouldInit: boolean = false) {
               bot.chat(`/msg ${match[1]} I don't have xp bottle...`);
             }
           }
-          if (isAuto) autoAttackEntity(true);
+          if (afRunning) autoFighter.startAttacking(false);
           return;
         } else await SendText(`[Tell] ${msg}`);
       }
@@ -204,8 +206,9 @@ export function mcbot(shouldInit: boolean = false) {
         );
         bot.chat('/home botpos');
         await waitForTeleport();
-        if (autoFightState) {
-          autoAttackEntity(true);
+        if (autoFighter.running) {
+          autoFighter.stopAttacking(false);
+          autoFighter.startAttacking(true);
         }
       }
     }
