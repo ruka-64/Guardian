@@ -191,8 +191,8 @@ export function mcbot(shouldInit: boolean = false) {
       `I was kicked :( (reason: ${reason}) trying to reconnect...`,
       true
     );
-    logger.log('Reconnecting after 5 seconds...');
-    await wait(5000);
+    logger.log('Reconnecting after 10 seconds...');
+    await wait(10000);
     return mcbot();
   });
   bot.on('error', (err) => {
@@ -205,8 +205,8 @@ export function mcbot(shouldInit: boolean = false) {
       true
     );
     logger.info(`End event detected (reason: ${reason})`);
-    logger.log('Reconnecting after 5 seconds...');
-    await wait(5000);
+    logger.log('Reconnecting after 10 seconds...');
+    await wait(10000);
     return mcbot();
   });
   bot.on('message', async (json, pos) => {
