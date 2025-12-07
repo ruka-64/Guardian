@@ -186,6 +186,8 @@ export function mcbot(shouldInit: boolean = false) {
   });
 
   bot.on('kicked', async (reason, loggedIn) => {
+    if (await kv.get('reconnecting')) return;
+    await kv.set('reconnecting', true);
     logger.warn(`I was kicked... reason: ${reason} (LoggedIn: ${loggedIn})`);
     await SendText(
       `I was kicked :( (reason: ${reason}) trying to reconnect...`,
@@ -200,6 +202,8 @@ export function mcbot(shouldInit: boolean = false) {
     else console.error(err);
   });
   bot.on('end', async (reason) => {
+    if (await kv.get('reconnecting')) return;
+    await kv.set('reconnecting', true);
     await SendText(
       `I was disconnected (reason: ${reason})! trying to reconnect...`,
       true
