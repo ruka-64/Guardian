@@ -80,7 +80,8 @@ export function mcbot(shouldInit: boolean = false) {
         await bot.waitForChunksToLoad();
         await bot.waitForTicks(10);
         bot.chat('/msg ruka64 reconnecting');
-        bot.chat('/server NeoSigen');
+        bot.chat('/neosigen');
+        return;
       }
       const kvData = await kv.get(entity.username);
       if (kvData !== 0) {
@@ -92,7 +93,7 @@ export function mcbot(shouldInit: boolean = false) {
 
   //TODO: Auto accepting tpa request
   bot.on('messagestr', async (msg) => {
-    if (msg == 'Unknown or incomplete command, see below for error') {
+    if (msg.includes('Unknown or incomplete command, see below for error')) {
       await SendText('Failed to send command (unknown command)', true);
     }
     if (msg.includes('[Spartan Notification]')) {
@@ -104,7 +105,7 @@ export function mcbot(shouldInit: boolean = false) {
       await bot.waitForChunksToLoad();
       await bot.waitForTicks(10);
       bot.chat('/msg ruka64 reconnecting');
-      bot.chat('/server NeoSigen');
+      bot.chat('/neosigen');
     }
     if (msg.includes('You cannot pick up items for')) {
       if (await kv.get('rejoining')) {
