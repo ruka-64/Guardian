@@ -71,7 +71,14 @@ export function mcbot(shouldInit: boolean = false) {
     });
     //
     if (entity && entity.username) {
+      if ((await kv.get('rejoining')) === true) return;
       if (config.mc.whitelist.includes(entity.username)) return;
+      if (entity.username.includes('[ZNPC]')) {
+        await kv.set('reJoining', true, 1000 * 30);
+        await SendText('I transfered to lobby! Rejoining to NeoSigen...', true);
+        bot.chat('/msg ruka64 reconnecting');
+        bot.chat('/server NeoSigen');
+      }
       const kvData = await kv.get(entity.username);
       if (kvData !== 0) {
         await kv.set(entity.username, 0, 1000 * 60 * 5);
