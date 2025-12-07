@@ -89,6 +89,12 @@ export function mcbot(shouldInit: boolean = false) {
 
   //TODO: Auto accepting tpa request
   bot.on('messagestr', async (msg) => {
+    if (msg.includes('You cannot pick up items for')) {
+      if ((await kv.get('rejoining')) === true) {
+        await SendText('Rejoined!', true);
+        await kv.delete('rejoining');
+      }
+    }
     const tpa_regex = /(.+) has requested to teleport to you./;
     const tell_regex = /\[(.+) -> me\] (.+)/;
     if (msg.endsWith('has requested to teleport to you.')) {
