@@ -103,6 +103,10 @@ export function mcbot(shouldInit: boolean = false) {
       if (await kv.get('rejoining')) {
         await SendText('Rejoined!', true);
         await kv.delete('rejoining');
+        if (autoFighter.running) {
+          autoFighter.stopAttacking(false);
+          autoFighter.startAttacking();
+        }
       }
     }
     const tpa_regex = /(.+) has requested to teleport to you./;

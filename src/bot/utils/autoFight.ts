@@ -53,18 +53,9 @@ export class autoFightModule {
   }
 
   private async reJoin() {
-    const state = this.running;
     SendText('Auto rejoining (spider.count > 20)', true);
-    if (state) this.stopAttacking(false);
     await kv.set('rejoining', true, 1000 * 30);
     bot.chat('/hub');
-    await bot.waitForChunksToLoad();
-    bot.chat('/msg ruka64 reconnecting');
-    bot.chat('/server NeoSigen');
-    await bot.waitForChunksToLoad();
-    bot.chat('/home botpos');
-    await bot.waitForTicks(20 * 6);
-    if (state) this.startAttacking();
   }
 
   private shouldRejoin() {
