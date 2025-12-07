@@ -24,10 +24,11 @@ export class autoFightModule {
 
     this.attackInterval = setInterval(async () => {
       if (bot.autoEat.isEating) return;
+      /*
       if (this.shouldRejoin()) {
         this.reJoin();
         return;
-      }
+      }*/
       this.equipWeapon();
       const entity = bot.nearestEntity((e) => {
         return (
