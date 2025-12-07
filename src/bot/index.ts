@@ -71,10 +71,11 @@ export function mcbot(shouldInit: boolean = false) {
     });
     //
     if (entity && entity.username) {
-      if ((await kv.get('rejoining')) === true) return;
+      if (await kv.get('rejoining')) return;
       if (config.mc.whitelist.includes(entity.username)) return;
       if (entity.username.includes('[ZNPC]')) {
         await kv.set('reJoining', true, 1000 * 30);
+        logger.log('rejoining kv value:', await kv.get('rejoining'));
         await SendText('I transfered to lobby! Rejoining to NeoSigen...', true);
         bot.chat('/msg ruka64 reconnecting');
         bot.chat('/server NeoSigen');
@@ -90,7 +91,7 @@ export function mcbot(shouldInit: boolean = false) {
   //TODO: Auto accepting tpa request
   bot.on('messagestr', async (msg) => {
     if (msg.includes('You cannot pick up items for')) {
-      if ((await kv.get('rejoining')) === true) {
+      if (await kv.get('rejoining')) {
         await SendText('Rejoined!', true);
         await kv.delete('rejoining');
       }
