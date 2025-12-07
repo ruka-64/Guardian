@@ -98,7 +98,8 @@ export function mcbot(shouldInit: boolean = false) {
         'Failed to send command (unknown command), reconnecting',
         true
       );
-      bot.end('suicide');
+      await bot.waitForChunksToLoad();
+      bot.quit();
     }
     if (msg.includes('[Spartan Notification]')) {
       if (!isReady) return;
