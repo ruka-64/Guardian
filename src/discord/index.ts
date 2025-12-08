@@ -23,7 +23,7 @@ client.commands = new Collection<
   (interaction: CommandInteraction) => Promise<void>
 >();
 
-const c_dirPath = join(__dirname, 'commands');
+const c_dirPath = join(import.meta.dirname, 'commands');
 const c_subPath = readdirSync(c_dirPath);
 
 for (const dir of c_subPath) {
