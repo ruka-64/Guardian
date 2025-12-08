@@ -46,6 +46,7 @@ export function mcbot(shouldInit: boolean = false) {
     bot.chat('/server NeoSigen');
     await waitForTeleport();
     logger.log('Moved to NeoSigen');
+    await SendText(`Connected! (logged in as ${bot.username})`, true);
     if (shouldInit) {
       await bot.waitForChunksToLoad();
       bot.chat(`/tpa ${config.master.mcid}`);
@@ -56,12 +57,12 @@ export function mcbot(shouldInit: boolean = false) {
     } else {
       bot.chat('/home botpos');
       if (readLastState().autoFightState) {
+        await bot.waitForTicks(80);
         await SendText('Recovered last autoFightState', true);
         autoFighter.startAttacking();
       }
     }
     logger.info(`${bot.username ?? 'Bot'} is ready!`);
-    await SendText(`Connected! (logged in as ${bot.username})`, true);
     isReady = true;
   });
 
