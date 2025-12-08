@@ -6,6 +6,7 @@ import { SendAlert, SendText } from '../discord/utils/notifier';
 import { loader as autoEat } from 'mineflayer-auto-eat';
 import { autoFightModule } from './utils/autoFight';
 import { InvCleaner, isInvFull } from './utils/inv';
+import { readLastState } from '../global/utils/lastState';
 
 export let isReady = false;
 export let bot: Bot;
@@ -54,6 +55,10 @@ export function mcbot(shouldInit: boolean = false) {
       bot.chat('/sethome botpos');
     } else {
       bot.chat('/home botpos');
+      if (readLastState().autoFightState) {
+        await SendText('Recovered last autoFightState', true);
+        autoFighter.startAttacking();
+      }
     }
     logger.info(`${bot.username ?? 'Bot'} is ready!`);
     await SendText(`Connected! (logged in as ${bot.username})`, true);
@@ -100,6 +105,7 @@ export function mcbot(shouldInit: boolean = false) {
       );
       await bot.waitForChunksToLoad();
       bot.quit();
+      process.exit(0);
     }
     if (msg.includes('[Spartan Notification]')) {
       if (!isReady) return;

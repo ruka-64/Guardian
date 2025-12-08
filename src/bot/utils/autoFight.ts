@@ -3,6 +3,7 @@ import { config } from '../../../config';
 import type { Bot } from 'mineflayer';
 import { SendText } from '../../discord/utils/notifier';
 import { kv } from '../..';
+import { saveLastState } from '../../global/utils/lastState';
 
 export class autoFightModule {
   public running: boolean;
@@ -15,6 +16,7 @@ export class autoFightModule {
   }
   async startAttacking(walk: boolean = true) {
     this.running = true;
+    await saveLastState({ autoFightState: true });
 
     if (walk) {
       bot.setControlState('forward', true);
@@ -24,11 +26,10 @@ export class autoFightModule {
 
     this.attackInterval = setInterval(async () => {
       if (bot.autoEat.isEating) return;
-      /*
       if (this.shouldRejoin()) {
         this.reJoin();
         return;
-      }*/
+      }
       this.equipWeapon();
       const entity = bot.nearestEntity((e) => {
         return (
@@ -46,6 +47,7 @@ export class autoFightModule {
   }
   stopAttacking(goback: boolean = true) {
     this.running = false;
+    saveLastState({ autoFightState: true });
     if (this.attackInterval) {
       clearInterval(this.attackInterval);
       this.attackInterval = null;
@@ -54,8 +56,8 @@ export class autoFightModule {
   }
 
   private async reJoin() {
-    SendText('Auto rejoining (spider.count > 20)', true);
-    bot.quit();
+    SendText('Auto rejoining (spider.count > 50)', true);
+    process.exit();
   }
 
   private shouldRejoin() {
@@ -65,7 +67,7 @@ export class autoFightModule {
         if (bot.entity.position.y < x.position.y) return true;
       } else return false;
     });
-    return spiders.length > 20;
+    return spiders.length > 50;
   }
 
   private goBotPos() {
