@@ -9,6 +9,7 @@ import { config } from '../../../../config.js';
 import { autoFighter, bot } from '../../../bot/index.js';
 import { ThrowItem } from '../../../bot/utils/inv.js';
 import { farm } from '../../../bot/utils/autoFarm.js';
+import { startFishing } from '../../../bot/utils/autoFish.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
   .setDescription('Minecraft Bot Commands')
@@ -29,7 +30,7 @@ export const data = new SlashCommandBuilder()
       )
   )
   .addSubcommand((subcommand) =>
-    subcommand.setName('farm').setDescription('Auto farm')
+    subcommand.setName('fish').setDescription('Auto fish')
   )
   .addSubcommand((subcommand) =>
     subcommand.setName('money').setDescription('Show money')
@@ -71,12 +72,9 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     });
     return;
   }
-  if (subcommand === 'farm') {
-    const msg = await interaction.deferReply({
-      flags: MessageFlagsBitField.Flags.Ephemeral,
-    });
-    await farm();
-    await msg.edit('Done.');
+  if (subcommand === 'fish') {
+    startFishing();
+    await interaction.reply('Started');
     return;
   }
   if (subcommand === 'autoclicker') {
