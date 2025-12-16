@@ -4,9 +4,12 @@ import { bot } from '..';
 let nowFishing = false;
 
 async function onCollect(player: any, entity: any) {
-  if (entity.kind === 'Drops' && player === bot.entity) {
+  logger.log('Fired');
+  logger.log('kind', entity.kind);
+  if (entity.kind === 'UNKNOWN' && player === bot.entity) {
     bot.removeListener('playerCollect', onCollect);
     logger.log('Collected');
+    bot.deactivateItem();
     await bot.waitForTicks(20);
     startFishing();
   }
