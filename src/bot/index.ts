@@ -7,6 +7,8 @@ import { loader as autoEat } from 'mineflayer-auto-eat';
 import { autoFightModule } from './utils/autoFight';
 import { InvCleaner, isInvFull } from './utils/inv';
 import { readLastState } from '../global/utils/lastState';
+import { startFishing } from './utils/autoFish';
+import { Vec3 } from 'vec3';
 
 export let isReady = false;
 export let bot: Bot;
@@ -144,6 +146,11 @@ export function mcbot(shouldInit: boolean = false) {
       const match = msg.match(tell_regex);
       if (match) {
         logger.log('Tell', msg);
+        if (match[2] === 'fish') {
+          bot.chat(`/msg ${match[1]} OK`);
+          startFishing();
+          return;
+        }
         if (match[2] === 'invcleaner') {
           await InvCleaner();
           bot.chat(`/msg ${match[1]} Done.`);
