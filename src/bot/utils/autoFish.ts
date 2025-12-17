@@ -1,12 +1,15 @@
 import { logger } from 'comodern';
 import { bot } from '..';
+import { kv } from '../..';
 
 let nowFishing = false;
 
 async function onCollect(str:string) {
+  if (await kv.get('antispam')) return;
   logger.log('Fired');
   //* +35.10$ +53.40XP +35.10pts
   if (str.includes('+') && str.includes('XP') && str.includes('pts')) {
+    await kv.set('antispam', true, 1000*6)
     bot.removeListener('messagestr', onCollect);
     logger.log('Collected');
     bot.deactivateItem();
