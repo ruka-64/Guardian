@@ -13,7 +13,6 @@ async function onCollect(str:string) {
     await kv.set('antispam', true, 1000*6)
     bot.removeListener('messagestr', onCollect);
     logger.log('Collected');
-    bot.deactivateItem();
     await bot.waitForTicks(20);
     startFishing();
   }
@@ -28,12 +27,15 @@ export async function startFishing() {
   }
 
   nowFishing = true;
-  bot.on('messagestr', onCollect);
+  // bot.on('messagestr', onCollect);
 
-  try {
-    await bot.fish();
-  } catch (err) {
-    logger.log(err);
+  while(1) {
+    try {
+      logger.log('Loop fish');
+      await bot.fish();
+    } catch (err) {
+      logger.log(err);
+    }
   }
   nowFishing = false;
 }
