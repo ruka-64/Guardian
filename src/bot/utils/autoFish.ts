@@ -3,11 +3,11 @@ import { bot } from '..';
 
 let nowFishing = false;
 
-async function onCollect(player: any, entity: any) {
+async function onCollect(str:string) {
   logger.log('Fired');
-  logger.log('kind', entity.kind);
-  if (entity.kind === 'UNKNOWN' && player === bot.entity) {
-    bot.removeListener('playerCollect', onCollect);
+  //* +35.10$ +53.40XP +35.10pts
+  if (str.includes('+') && str.includes('XP') && str.includes('pts')) {
+    bot.removeListener('messagestr', onCollect);
     logger.log('Collected');
     bot.deactivateItem();
     await bot.waitForTicks(20);
@@ -24,7 +24,7 @@ export async function startFishing() {
   }
 
   nowFishing = true;
-  bot.on('playerCollect', onCollect);
+  bot.on('messagestr', onCollect);
 
   try {
     await bot.fish();
@@ -35,7 +35,7 @@ export async function startFishing() {
 }
 
 export function stopFishing() {
-  bot.removeListener('playerCollect', onCollect);
+  bot.removeListener('messagestr', onCollect);
 
   if (nowFishing) {
     bot.activateItem();

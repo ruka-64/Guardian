@@ -10,6 +10,7 @@ import { autoFighter, bot } from '../../../bot/index.js';
 import { ThrowItem } from '../../../bot/utils/inv.js';
 import { farm } from '../../../bot/utils/autoFarm.js';
 import { startFishing } from '../../../bot/utils/autoFish.js';
+import { kv } from '../../../index.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
   .setDescription('Minecraft Bot Commands')
@@ -37,6 +38,9 @@ export const data = new SlashCommandBuilder()
   )
   .addSubcommand((subcommand) =>
     subcommand.setName('showinv').setDescription("display bot's inventory")
+  )
+  .addSubcommand((subcommand) =>
+    subcommand.setName('togglesneak').setDescription('Toggle sneak state')
   )
   .addSubcommand((subcommand) =>
     subcommand
@@ -107,5 +111,12 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const result = await ThrowItem(id!);
     if (result) await interaction.reply('OK');
     else await interaction.reply('Invalid item id');
+  }
+  if (subcommand === 'togglesneak') {
+    const before_state = await kv.get<boolean>('sneakState');
+    const after_state = before_state ? true : false;
+    bot.setControlState('sneak', after_state)
+    await kv.set('sneakState', after_state);
+    return await interaction.reply(`Toggled: ${after_state}`)
   }
 }
