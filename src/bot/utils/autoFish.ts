@@ -23,6 +23,7 @@ export class autoFishModule {
     if (this.running) {
       this.stopFishing();
     }
+    this.running = true;
     while (1) {
       if (!this.running) break;
       try {
