@@ -6,10 +6,8 @@ import {
 } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../../../config.js';
-import { autoFighter, bot } from '../../../bot/index.js';
+import { autoFighter, autoFisher, bot } from '../../../bot/index.js';
 import { ThrowItem } from '../../../bot/utils/inv.js';
-import { farm } from '../../../bot/utils/autoFarm.js';
-import { startFishing } from '../../../bot/utils/autoFish.js';
 import { kv } from '../../../index.js';
 export const data = new SlashCommandBuilder()
   .setName('mcbot')
@@ -77,8 +75,13 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     return;
   }
   if (subcommand === 'fish') {
-    startFishing();
-    await interaction.reply('Started');
+    if (autoFisher.running) {
+      autoFisher.stopFishing();
+      await interaction.reply('Stopped');
+    } else {
+      autoFisher.startFishing();
+      await interaction.reply('Started');
+    }
     return;
   }
   if (subcommand === 'autoclicker') {
@@ -115,8 +118,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   if (subcommand === 'togglesneak') {
     const before_state = await kv.get<boolean>('sneakState');
     const after_state = before_state ? true : false;
-    bot.setControlState('sneak', after_state)
+    bot.setControlState('sneak', after_state);
     await kv.set('sneakState', after_state);
-    return await interaction.reply(`Toggled: ${after_state}`)
+    return await interaction.reply(`Toggled: ${after_state}`);
   }
 }
