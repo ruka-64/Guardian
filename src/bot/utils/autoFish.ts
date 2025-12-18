@@ -17,16 +17,15 @@ async function onCollect(player: any, entity: any) {
 
 export async function startFishing() {
   logger.log('Fishing');
-  try {
-    await bot.equip(bot.registry.itemsByName.fishing_rod!.id, 'hand');
-  } catch (err) {
-    return logger.log(err);
-  }
 
   nowFishing = true;
   bot.on('playerCollect', onCollect);
+  const rod = bot.registry.itemsByName.fishing_rod;
 
   try {
+    if (!bot.heldItem || bot.heldItem.name !== rod!.name) {
+      await bot.equip(rod!.id, 'hand');
+    }
     await bot.fish();
   } catch (err) {
     logger.log(err);
